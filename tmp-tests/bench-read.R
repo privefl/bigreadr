@@ -4,17 +4,22 @@ csv <- readr_example("mtcars.csv")
 df <- data.table::fread(csv, data.table = FALSE)
 
 ## LONG CSV
-csv2 <- tempfile(fileext = ".csv")
-data.table::fwrite(df[rep(seq_len(nrow(df)), 100000), ], csv2,
-                   quote = FALSE, row.names = FALSE)
+csv2 <- "tmp-data/mtcars-long.csv"
+# data.table::fwrite(df[rep(seq_len(nrow(df)), 500000), ], csv2,
+#                    quote = FALSE, row.names = FALSE)
 
 system.time(
   df2 <- data.table::fread(csv2)
-) # 0.6
+) # 3.5
 
 system.time(
   df3 <- readr::read_csv(csv2)
-) # 4.9
+) # 25
+rm(df2, df3); gc(reset = TRUE)
+
+
+system.time(nlines <- fpeek::peek_count_lines(csv2)) # 1.8
+system.time(nlines2 <- nrow(data.table::fread(csv2, select = 1))) # 2.8
 
 tmp <- tempfile()
 if (Sys.info()[["sysname"]] == "Windows") {
@@ -40,17 +45,21 @@ system.time(system(cmd)) # 1.4
 
 
 ## LARGE CSV
-csv3 <- tempfile(fileext = ".csv")
-data.table::fwrite(df[rep(seq_len(ncol(df)), 1000)], csv3,
+csv3 <- "tmp-data/mtcars-wide.csv"
+data.table::fwrite(df[rep(seq_len(nrow(df)), 50), rep(seq_len(ncol(df)), 10000)], csv3,
                    quote = FALSE, row.names = FALSE)
 
 system.time(
   df2 <- data.table::fread(csv3, data.table = FALSE)
-) # 0.06
-
+) # 0.06 -> 0.65 -> 9.8
 system.time(
-  df3 <- readr::read_csv(csv3)
-) # 6
+  nlines <- nrow(data.table::fread(csv3, select = 1))
+) # 0.1 -> 0.45 -> 4.5
+system.time(nlines2 <- fpeek::peek_count_lines(csv3))
+
+# system.time(
+#   df3 <- readr::read_csv(csv3)
+# ) # 6
 
 cmd <- sprintf("%s \"NR%%%d==1{x=\"\"\"%s\"\"\"++i;}{print > x}\" %s",
                awk, 2, gsub("\\\\", "\\\\\\\\", tmp), normalizePath(csv3))

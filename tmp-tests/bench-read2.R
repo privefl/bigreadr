@@ -1,10 +1,11 @@
 # https://sourceforge.net/projects/gnuwin32/files/coreutils/5.3.0/coreutils-5.3.0.exe/download
 
 csv <- readr::readr_example("mtcars.csv")
-split <- shortPathName("C:\\Program Files (x86)\\GnuWin32/bin/split.exe")
+# split <- shortPathName("C:\\Program Files (x86)\\GnuWin32/bin/split.exe")
+split <- "split"
 
 system(sprintf("%s --version", split)) == 0
-system(sprintf("%s -l 5 %s", split, csv))
+# system(sprintf("%s -l 5 %s", split, csv))
 
 ## LONG CSV
 df <- data.table::fread(csv, data.table = FALSE)
@@ -13,15 +14,17 @@ data.table::fwrite(df[rep(seq_len(nrow(df)), 500000), ], csv2,
                    quote = FALSE, row.names = FALSE)
 file.size(csv2)
 
-system.time(system(sprintf("find /c /v \"aabbccdd\" %s", csv2)))
+# system.time(system(sprintf("find /c /v \"aabbccdd\" %s", csv2)))
 
-tmp <- tempfile()
 system.time(data.table::fread(csv2, nThread = 1))  ## 2.2
 system.time(data.table::fread(csv2, nThread = 2))  ## 1.5
 system.time(data.table::fread(csv2, nThread = 4))  ## 1
 system.time(data.table::fread(csv2, nThread = 7))  ## 0.7
+
+tmp <- tempfile()
 system.time(system(sprintf("%s -l 200000 %s %s", split, csv2, tmp))) ## 12 sec
 system.time(fpeek::peek_count_lines(csv2))                           ## 3 sec
+system.time(nrow(data.table::fread(csv2, select = 1)))
 
 files <- list.files(dirname(tmp), basename(tmp), full.names = TRUE)
 df1 <- data.table::fread(files[1], data.table = FALSE)
