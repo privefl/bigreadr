@@ -65,16 +65,16 @@ big_fread <- function(file, .transform = identity, .combine = my_rbind,
   ## Read first part to get names and to skip some lines
   part1 <- .transform(fread2(file_parts[1], skip = skip, ...))
 
-  print_proc("Reading first part")
+  print_proc("Reading + transforming first part")
 
-  ## Read other parts
+  ## Read + transform other parts
   other_parts <- lapply(file_parts[-1], function(file_part) {
     .transform(fread2(file_part, skip = 0, col.names = names(part1), ...))
   })
 
-  print_proc("Reading other parts")
+  print_proc("Reading + transforming other parts")
 
-  ## Combine all parts
+  ## Combine + transform all parts
   res <- do.call(.combine, c(list(part1), other_parts))
 
   print_proc("Combining")
