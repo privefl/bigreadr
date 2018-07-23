@@ -5,7 +5,8 @@
 \title{Read large text file}
 \usage{
 big_fread(file, .transform = identity, .combine = my_rbind, skip = 0, ...,
-  every_x_mb = 100, split = "split")
+  every_x_mb = 100, split = getOption("bigreadr.split"),
+  print_timings = TRUE)
 }
 \arguments{
 \item{file}{Path to file.}
@@ -24,6 +25,8 @@ expected \code{input}, \code{file}, \code{skip} and \code{col.names}.}
 \item{every_x_mb}{Maximum size of new files (default is \code{100} Mo).}
 
 \item{split}{Path to system command 'split'. See README.}
+
+\item{print_timings}{Whether to print timings? Default is \code{TRUE}.}
 }
 \value{
 A vector of paths to the new files.

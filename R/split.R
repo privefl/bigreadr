@@ -9,7 +9,8 @@
 #' @return A vector of paths to the new files.
 #' @export
 #'
-split_file <- function(file, every_x_mb = 100, split = "split") {
+split_file <- function(file, every_x_mb = 100,
+                       split = getOption("bigreadr.split")) {
 
   assert_exist(file)
 

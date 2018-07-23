@@ -5,13 +5,17 @@ csv2 <- "tmp-data/mtcars-long.csv"
 #                    quote = FALSE, row.names = FALSE)
 
 library(bigreadr)
+if (Sys.info()[["sysname"]] == "Windows") {
+  options(bigreadr.split = "C:\\Program Files (x86)\\GnuWin32/bin/split.exe")
+}
+
 system.time(
   test <- split_file(csv2)
 )
 
 rm(test2); gc(reset = TRUE)
 system.time(
-  test2 <- big_fread(csv2, every_x_mb = 1000)
+  test2 <- big_fread(csv2, every_x_mb = 100)
 )
 gc() # + 2 GB
 

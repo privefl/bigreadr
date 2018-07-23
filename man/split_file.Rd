@@ -4,7 +4,7 @@
 \alias{split_file}
 \title{Split file}
 \usage{
-split_file(file, every_x_mb = 100, split = "split")
+split_file(file, every_x_mb = 100, split = getOption("bigreadr.split"))
 }
 \arguments{
 \item{file}{Path to file.}

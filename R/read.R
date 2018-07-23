@@ -42,37 +42,42 @@ my_rbind <- function(...) {
 #' @param skip Number of lines to skip at the beginning of `file`.
 #' @param ... Other arguments to be passed to [data.table::fread],
 #'   expected `input`, `file`, `skip` and `col.names`.
+#' @param print_timings Whether to print timings? Default is `TRUE`.
 #'
 #' @return A vector of paths to the new files.
 #' @export
 #'
 big_fread <- function(file, .transform = identity, .combine = my_rbind,
                       skip = 0, ...,
-                      every_x_mb = 100, split = "split") {
+                      every_x_mb = 100, split = getOption("bigreadr.split"),
+                      print_timings = TRUE) {
 
   begin <- proc.time()[3]
+  print_proc <- function(msg) {
+    if (print_timings) message2("%s: %s", msg, round(proc.time()[3] - begin, 1))
+  }
 
   ## Split file
   file_parts <- split_file(file, every_x_mb = every_x_mb, split = split)
 
-  cat("Splitting:", round(proc.time()[3] - begin, 1), "\n")
+  print_proc("Splitting")
 
   ## Read first part to get names and to skip some lines
   part1 <- .transform(fread2(file_parts[1], skip = skip, ...))
 
-  cat("Part 1:", round(proc.time()[3] - begin, 1), "\n")
+  print_proc("Reading first part")
 
   ## Read other parts
   other_parts <- lapply(file_parts[-1], function(file_part) {
     .transform(fread2(file_part, skip = 0, col.names = names(part1), ...))
   })
 
-  cat("Other parts:", round(proc.time()[3] - begin, 1), "\n")
+  print_proc("Reading other parts")
 
   ## Combine all parts
   res <- do.call(.combine, c(list(part1), other_parts))
 
-  cat("Combining:", round(proc.time()[3] - begin, 1), "\n")
+  print_proc("Combining")
 
   res
 }
