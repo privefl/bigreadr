@@ -53,8 +53,12 @@ big_fread <- function(file, .transform = identity, .combine = my_rbind,
                       print_timings = TRUE) {
 
   begin <- proc.time()[3]
-  print_proc <- function(msg) {
-    if (print_timings) message2("%s: %s", msg, round(proc.time()[3] - begin, 1))
+  print_proc <- function(action) {
+    if (print_timings) {
+      reset <- proc.time()[3]
+      message2("%s: %s seconds.", action, round(reset - begin, 1))
+      begin <<- reset
+    }
   }
 
   ## Split file
