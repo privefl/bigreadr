@@ -25,7 +25,8 @@ split_file <- function(file, every_nlines = NULL, nlines = NULL, split = "split"
 
   assert_exist(file)
 
-  split <- utils::shortPathName(split)  ## useful when there are spaces in the path
+  ## Useful when there are spaces in the path on Windows
+  if (Sys.info()[["sysname"]] == "Windows") split <- utils::shortPathName(split)
   if (suppressWarnings(system(sprintf("%s --version", split))) != 0) {
     stop2("System command 'split' is needed to use this package. See README.")
   }
