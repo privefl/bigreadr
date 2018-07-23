@@ -1,7 +1,7 @@
 ################################################################################
 
-fread2 <- function(..., data.table = FALSE) {
-  data.table::fread(..., data.table = data.table)
+fread2 <- function(file, ..., data.table = FALSE) {
+  data.table::fread(file = file, ..., data.table = data.table)
 }
 
 fwrite2 <- function(x, file, ..., quote = FALSE) {
@@ -24,7 +24,7 @@ my_rbind <- function(...) {
   list_df_merged <- lapply(seq_along(list_df[[1]]), function(k) {
     do.call(c, lapply(list_df, function(l) l[[k]]))
   })
-  list_df_merged_named <- setNames(list_df_merged, names(list_df[[1]]))
+  list_df_merged_named <- stats::setNames(list_df_merged, names(list_df[[1]]))
   as.data.frame(list_df_merged_named, stringsAsFactors = FALSE)
 }
 
@@ -41,7 +41,7 @@ my_rbind <- function(...) {
 #'   (`...`) such as `rbind` (the default).
 #' @param skip Number of lines to skip at the beginning of `file`.
 #' @param ... Other arguments to be passed to [data.table::fread],
-#'   expected `input`, `file`, `skip` and `col.names`.
+#'   excepted `input`, `file`, `skip` and `col.names`.
 #' @param print_timings Whether to print timings? Default is `TRUE`.
 #'
 #' @return A vector of paths to the new files.
