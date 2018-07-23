@@ -1,9 +1,9 @@
-# bigreadr
+# R package {bigreadr}
 
-Read large text files based on splitting + data.table::fread
+Read large text files based on splitting + `data.table::fread`
 
 
-## Split
+## Command 'split'
 
 Splitting is the strategy used by this package to read large text files.
 For splitting, system command 'split' is used. 

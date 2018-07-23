@@ -13,7 +13,8 @@ split_file(file, every_nlines = NULL, nlines = NULL, split = "split")
 Default splits the file in files of 500 MB.}
 
 \item{nlines}{Number of lines of \code{file} (including possible header).
-Default uses \code{fpeek::peek_count_lines(file)} to count the number of lines.}
+Default uses \code{fpeek::peek_count_lines(file)} to count the number of lines.
+This argument is only used to guess \code{every_nlines}.}
 
 \item{split}{Path to system command 'split'. See README.}
 }

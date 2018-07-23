@@ -12,3 +12,5 @@ RoxygenNote: 6.0.1
 Imports: 
     data.table,
     fpeek
+Suggests: 
+    testthat
