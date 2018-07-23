@@ -4,17 +4,12 @@
 \alias{split_file}
 \title{Split file}
 \usage{
-split_file(file, every_nlines = NULL, nlines = NULL, split = "split")
+split_file(file, every_x_mb = 100, split = "split")
 }
 \arguments{
 \item{file}{Path to file.}
 
-\item{every_nlines}{Number of lines per new file.
-Default splits the file in files of 500 MB.}
-
-\item{nlines}{Number of lines of \code{file} (including possible header).
-Default uses \code{fpeek::peek_count_lines(file)} to count the number of lines.
-This argument is only used to guess \code{every_nlines}.}
+\item{every_x_mb}{Maximum size of new files (default is \code{100} Mo).}
 
 \item{split}{Path to system command 'split'. See README.}
 }

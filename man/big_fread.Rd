@@ -4,28 +4,24 @@
 \alias{big_fread}
 \title{Read large text file}
 \usage{
-big_fread(file, .transform, .combine, skip = 0, ..., every_nlines = NULL,
-  nlines = NULL, split = "split")
+big_fread(file, .transform = identity, .combine = my_rbind, skip = 0, ...,
+  every_x_mb = 100, split = "split")
 }
 \arguments{
 \item{file}{Path to file.}
 
-\item{.transform}{Function to transform each part. See examples.}
+\item{.transform}{Function to transform each data frame corresponding to each
+part of the \code{file}. Default doesn't change anything.}
 
-\item{.combine}{Function to combine results.
-Should accept multiple arguments (\code{...}) such as \code{rbind}.}
+\item{.combine}{Function to combine results. Should accept multiple arguments
+(\code{...}) such as \code{rbind} (the default).}
 
 \item{skip}{Number of lines to skip at the beginning of \code{file}.}
 
 \item{...}{Other arguments to be passed to \link[data.table:fread]{data.table::fread},
 expected \code{input}, \code{file}, \code{skip} and \code{col.names}.}
 
-\item{every_nlines}{Number of lines per new file.
-Default splits the file in files of 500 MB.}
-
-\item{nlines}{Number of lines of \code{file} (including possible header).
-Default uses \code{fpeek::peek_count_lines(file)} to count the number of lines.
-This argument is only used to guess \code{every_nlines}.}
+\item{every_x_mb}{Maximum size of new files (default is \code{100} Mo).}
 
 \item{split}{Path to system command 'split'. See README.}
 }
