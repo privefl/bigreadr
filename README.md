@@ -3,6 +3,26 @@
 Read large text files based on splitting + `data.table::fread`
 
 
+## Example
+
+```{r}
+# devtools::install_github("privefl/bigreadr")
+library(bigreadr)
+
+# Create a temporary file of ~360 MB (just as an example)
+csv <- tempfile()
+data.table::fwrite(iris[rep(seq_len(nrow(iris)), 1e5), ], csv,
+                   quote = FALSE, row.names = FALSE)
+format(file.size(csv), big.mark = ",")
+
+# Read (by parts) all data -> using `fread` would be faster
+big_iris <- big_fread(csv)
+# Read and subset (by parts)
+big_iris_setosa <- big_fread(csv, .transform = function(df) {
+  dplyr::filter(df, Species == "setosa")
+})
+```
+
 ## Command 'split'
 
 Splitting is the strategy used by this package to read large text files.
