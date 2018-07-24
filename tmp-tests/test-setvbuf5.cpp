@@ -5,8 +5,8 @@ using namespace Rcpp;
 
 // [[Rcpp::export]]
 NumericVector test_setvbuf6(std::string filename,
-                  std::string filename2,
-                  int every_nlines) {
+                            std::string filename2,
+                            int every_nlines) {
 
   FILE *fp_in = fopen(filename.c_str(), "rb"), *fp_out;
   setvbuf(fp_in, NULL, _IOLBF, BUFLEN);
