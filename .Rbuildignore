@@ -2,3 +2,6 @@
 ^\.Rproj\.user$
 ^tmp-tests$
 ^tmp-data$
+^\.travis\.yml$
+^appveyor\.yml$
+^codecov\.yml$

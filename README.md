@@ -1,3 +1,8 @@
+[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Travis build status](https://travis-ci.org/privefl/bigreadr.svg?branch=master)](https://travis-ci.org/privefl/bigreadr)
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/privefl/bigreadr?branch=master&svg=true)](https://ci.appveyor.com/project/privefl/bigreadr)
+[![Coverage status](https://codecov.io/gh/privefl/bigreadr/branch/master/graph/badge.svg)](https://codecov.io/github/privefl/bigreadr?branch=master)
+
 # R package {bigreadr}
 
 Read large text files based on splitting + `data.table::fread`

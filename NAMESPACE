@@ -2,4 +2,7 @@
 
 export(big_fread)
 export(my_rbind)
+export(nlines)
 export(split_file)
+importFrom(Rcpp,sourceCpp)
+useDynLib(bigreadr, .registration = TRUE)

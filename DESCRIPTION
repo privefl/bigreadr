@@ -10,6 +10,10 @@ ByteCompile: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.0.1
 Imports: 
-    data.table
+    data.table,
+    Rcpp
 Suggests: 
-    testthat
+    testthat,
+    covr
+LinkingTo: 
+    Rcpp
