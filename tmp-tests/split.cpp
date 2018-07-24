@@ -1,4 +1,3 @@
-// [[Rcpp::depends(BH, bigstatsr)]]
 #include <bigstatsr/BMAcc.h>
 
 #define BUFLEN (64 * 1024)
@@ -73,7 +72,7 @@ NumericVector test_setvbuf7(std::string filename,
     // Close file number 'k'
     fflush(fp_out);
     fclose(fp_out);
-    parts(k - 1, 0) = 1;
+    parts(k - 1, 0) = 1;  // OK to porcess
     Rcout << k << std::endl;
 
   }
