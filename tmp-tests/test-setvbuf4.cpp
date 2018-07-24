@@ -35,6 +35,7 @@ int test_setvbuf5(std::string filename, std::string filename2) {
 
       not_eol = (line[last] != '\n');
 
+      fflush(fp_out);
       size *= 2;
       temp = new char[size];
       delete [] line;
