@@ -6,8 +6,8 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 int test_setvbuf5(std::string filename, std::string filename2) {
 
-  FILE *fp_in  = fopen(filename.c_str(),  "rb"), *fp_out;
-  setvbuf(fp_in,  NULL, _IOLBF, BUFLEN);
+  FILE *fp_in = fopen(filename.c_str(), "rb"), *fp_out;
+  setvbuf(fp_in, NULL, _IOLBF, BUFLEN);
 
   const char *fn_out = filename2.c_str();
   char name_out[strlen(fn_out) + 20];

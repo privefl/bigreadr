@@ -1,6 +1,4 @@
-library(readr)
-
-csv <- readr_example("mtcars.csv")
+csv <- readr::readr_example("mtcars.csv")
 df <- data.table::fread(csv, data.table = FALSE)
 
 ## LONG CSV
