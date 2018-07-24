@@ -13,8 +13,8 @@ int test_setvbuf3(std::string filename,
                   std::string filename2,
                   int size = 100) {
 
-  FILE *fp_in = fopen(filename.c_str(), "r");
-  FILE *fp_out = fopen(filename2.c_str(), "w");
+  FILE *fp_in = fopen(filename.c_str(), "rb");
+  FILE *fp_out = fopen(filename2.c_str(), "wb");
 
   unsigned sizem1 = size - 1;
   int last = size - 2;
