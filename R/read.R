@@ -1,11 +1,44 @@
 ################################################################################
 
-fread2 <- function(file, ..., data.table = FALSE) {
-  data.table::fread(file = file, ..., data.table = data.table)
+#' Read a text file
+#'
+#' @param file Path to the file that you want to read from.
+#' @param ... Other arguments to be passed to [data.table::fread].
+#' @param data.table Whether to return a `data.table` or just a `data.frame`?
+#'   Default is `FALSE` (and is the opposite of [data.table::fread]).
+#' @param nThread Number of threads to use. Default uses all threads minus one.
+#'
+#' @return A `data.frame` by default; a `data.table` when `data.table = TRUE`.
+#' @export
+#'
+#' @examples
+#' tmp <- fwrite2(iris, tempfile())
+#' iris2 <- fread2(tmp)
+#' all.equal(iris2, iris)  ## fread doesn't use factors
+fread2 <- function(file, ...,
+                   data.table = FALSE,
+                   nThread = getOption("bigreadr.nThread")) {
+
+  data.table::fread(file = file, ..., data.table = data.table, nThread = nThread)
 }
 
-fwrite2 <- function(x, file, ..., quote = FALSE) {
-  data.table::fwrite(x, file, ..., quote = quote)
+#' Write a data frame to a text file
+#'
+#' @param x Data frame to write.
+#' @param file Path to the file that you want to write to.
+#' @param ... Other arguments to be passed to [data.table::fwrite].
+#' @param quote Whether to quote strings (default is `FALSE`).
+#'
+#' @return Input parameter `file`, invisibly.
+#' @export
+#'
+#' @inherit fread2 examples
+fwrite2 <- function(x, file, ...,
+                    quote = FALSE,
+                    nThread = getOption("bigreadr.nThread")) {
+
+  data.table::fwrite(x, file, ..., quote = quote, nThread = nThread)
+  invisible(file)
 }
 
 ################################################################################
@@ -47,9 +80,9 @@ my_rbind <- function(...) {
 #' @return A vector of paths to the new files.
 #' @export
 #'
-big_fread <- function(file, .transform = identity, .combine = my_rbind,
+big_fread <- function(file, every_nlines,
+                      .transform = identity, .combine = my_rbind,
                       skip = 0, ...,
-                      every_x_mb = 100, split = getOption("bigreadr.split"),
                       print_timings = TRUE) {
 
   begin <- proc.time()[3]
@@ -62,7 +95,9 @@ big_fread <- function(file, .transform = identity, .combine = my_rbind,
   }
 
   ## Split file
-  file_parts <- split_file(file, every_x_mb = every_x_mb, split = split)
+  infos_split <- split_file(file, every_nlines = every_nlines)
+  file_parts <- get_split_files(infos_split)
+  on.exit(unlink(file_parts), add = TRUE)
 
   print_proc("Splitting")
 

@@ -2,20 +2,42 @@
 % Please edit documentation in R/split.R
 \name{split_file}
 \alias{split_file}
-\title{Split file}
+\alias{get_split_files}
+\title{Split file every nlines}
 \usage{
-split_file(file, every_x_mb = 100, split = getOption("bigreadr.split"))
+split_file(file, every_nlines, prefix_out = tempfile())
+
+get_split_files(split_file_out)
 }
 \arguments{
-\item{file}{Path to file.}
+\item{file}{Path to file that you want to split.}
 
-\item{every_x_mb}{Maximum size of new files (default is \code{100} Mo).}
+\item{every_nlines}{Maximum number of lines in new file parts.}
 
-\item{split}{Path to system command 'split'. See README.}
+\item{prefix_out}{Prefix for created files. Default uses \code{tempfile()}.}
+
+\item{split_file_out}{Output of \link{split_file}.}
 }
 \value{
-A vector of paths to the new files.
+A list with
+\itemize{
+\item \code{name_in}: input parameter \code{file},
+\item \code{prefix_out}: input parameter `prefix_out``,
+\item \code{nfiles}: Number of files (parts) created,
+\item \code{nlines_part}: input parameter \code{every_nlines},
+\item \code{nlines_all}: total number of lines of \code{file}.
+}
+
+Vector of file paths created by \link{split_file}.
 }
 \description{
-Split file
+Split file every nlines
+
+Get files from splitting.
+}
+\examples{
+tmp <- fwrite2(iris, tempfile())
+infos <- split_file(tmp, 100)
+str(infos)
+get_split_files(infos)
 }

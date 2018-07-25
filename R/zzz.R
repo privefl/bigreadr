@@ -2,7 +2,7 @@
 
 .onLoad <- function(libname, pkgname) {
   options(
-    bigreadr.split = "split"
+    bigreadr.nThread = parallel::detectCores() - 1L
   )
 }
 
@@ -10,7 +10,7 @@
 
 .onUnload <- function(libpath) {
   options(
-    bigreadr.split = NULL
+    bigreadr.nThread = NULL
   )
 }
 

@@ -4,12 +4,13 @@
 \alias{big_fread}
 \title{Read large text file}
 \usage{
-big_fread(file, .transform = identity, .combine = my_rbind, skip = 0, ...,
-  every_x_mb = 100, split = getOption("bigreadr.split"),
-  print_timings = TRUE)
+big_fread(file, every_nlines, .transform = identity,
+  .combine = my_rbind, skip = 0, ..., print_timings = TRUE)
 }
 \arguments{
-\item{file}{Path to file.}
+\item{file}{Path to file that you want to split.}
+
+\item{every_nlines}{Maximum number of lines in new file parts.}
 
 \item{.transform}{Function to transform each data frame corresponding to each
 part of the \code{file}. Default doesn't change anything.}
@@ -21,10 +22,6 @@ part of the \code{file}. Default doesn't change anything.}
 
 \item{...}{Other arguments to be passed to \link[data.table:fread]{data.table::fread},
 excepted \code{input}, \code{file}, \code{skip} and \code{col.names}.}
-
-\item{every_x_mb}{Maximum size of new files (default is \code{100} Mo).}
-
-\item{split}{Path to system command 'split'. See README.}
 
 \item{print_timings}{Whether to print timings? Default is \code{TRUE}.}
 }

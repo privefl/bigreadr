@@ -1,5 +1,6 @@
 Package: bigreadr
-Version: 0.0.0.9000
+Version: 0.1.0
+date: 2018-07-25
 Title: Read Large Text Files
 Description: Read large text files by splitting them in smaller files.
 Authors@R: person("Florian", "Privé", , "florian.prive.21@gmail.com", c("aut", "cre"))
@@ -8,10 +9,11 @@ Encoding: UTF-8
 LazyData: true
 ByteCompile: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.0.1
+RoxygenNote: 6.0.1.9000
 Imports: 
     data.table,
-    Rcpp
+    Rcpp,
+    parallel
 Suggests: 
     testthat,
     covr
