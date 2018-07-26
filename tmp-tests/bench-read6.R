@@ -5,6 +5,17 @@ system.time(
   test2 <- big_fread(csv2, 1e6)
 )
 
+library(bigstatsr)
+system.time(n1 <- bigstatsr::nlines(csv2))
+system.time(n2 <- bigreadr::nlines(csv2))
+
+debugonce(big_read)
+test <- big_read(csv2, header = TRUE, sep = ",",
+                 nlines = n1, confirmed = FALSE,
+                 nlines.block = 1e6, type = "double")
+
+
+
 csv3 <- "tmp-data/mtcars-wide.csv"
 
 system.time(
