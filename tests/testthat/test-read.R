@@ -33,6 +33,15 @@ test_that("'big_fread2' works", {
 
 ################################################################################
 
+test_that("Same column accessor", {
+  iris_dt <- data.table::as.data.table(iris)
+  expect_equal(iris[, 1:3], as.data.frame(iris_dt[, 1:3]))
+  expect_equal(iris[, 3, drop = FALSE],
+               as.data.frame(iris_dt[, 3, drop = FALSE]))
+})
+
+################################################################################
+
 test_that("Use 'scan' correctly", {
   expect_identical(scan(tmp, "", skip = 0, nlines = 1, sep = "\n", quiet = TRUE),
                    paste(names(iris), collapse = ","))

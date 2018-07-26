@@ -188,7 +188,7 @@ big_fread2 <- function(file, nb_parts,
   res <- do.call(.combine, unname(all_parts))
 
   ## Reorder
-  `[.data.frame`(res, rank(select))
+  res[, rank(select), drop = FALSE]
 }
 
 ################################################################################

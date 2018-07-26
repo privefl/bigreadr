@@ -1,6 +1,6 @@
 library(bigreadr)
 
-long <- TRUE
+long <- FALSE
 if (long) {
   csv2 <- "tmp-data/mtcars-long.csv"
   block <- 100e4
@@ -10,7 +10,7 @@ if (long) {
   csv2 <- "tmp-data/mtcars-wide.csv"
   block <- 100
   M <- 11e4
-  block2 <- 3e4
+  block2 <- 3
 }
 
 
@@ -49,6 +49,7 @@ system.time({
   X2 <- FBM(n1 - 1, M)
   offset <- 0
   test3 <- big_fread2(csv2, block2, .transform = function(df) {
+    print(offset)
     ind <- cols_along(df)
     X[, offset + ind] <- do.call(cbind, df)
     offset <<- offset + length(ind)
