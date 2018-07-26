@@ -106,13 +106,15 @@ big_fread <- function(file, every_nlines,
   print_proc("Splitting")
 
   ## Read first part to get names and to skip some lines
-  part1 <- .transform(fread2(file_parts[1], skip = skip, ...))
+  part1 <- fread2(file_parts[1], skip = skip, ...)
+  names_df <- names(part1)
+  part1 <- .transform(part1)
 
   print_proc("Reading + transforming first part")
 
   ## Read + transform other parts
   other_parts <- lapply(file_parts[-1], function(file_part) {
-    .transform(fread2(file_part, skip = 0, col.names = names(part1), ...))
+    .transform(fread2(file_part, skip = 0, col.names = names_df, ...))
   })
 
   print_proc("Reading + transforming other parts")
