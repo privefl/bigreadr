@@ -59,7 +59,7 @@ fwrite2 <- function(x, file, ...,
 rbind_df <- function(...) {
   list_df <- list(...)
   list_df_merged <- lapply(seq_along(list_df[[1]]), function(k) {
-    do.call(c, lapply(list_df, function(l) l[[k]]))
+    unlist(lapply(list_df, function(l) l[[k]]))
   })
   list_df_merged_named <- stats::setNames(list_df_merged, names(list_df[[1]]))
   as.data.frame(list_df_merged_named, stringsAsFactors = FALSE)
