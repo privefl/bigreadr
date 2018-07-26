@@ -15,6 +15,8 @@ fwrite2(x, file, ..., quote = FALSE,
 \item{...}{Other arguments to be passed to \link[data.table:fwrite]{data.table::fwrite}.}
 
 \item{quote}{Whether to quote strings (default is \code{FALSE}).}
+
+\item{nThread}{Number of threads to use. Default uses all threads minus one.}
 }
 \value{
 Input parameter \code{file}, invisibly.

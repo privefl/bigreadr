@@ -28,11 +28,15 @@ fread2 <- function(file, ...,
 #' @param file Path to the file that you want to write to.
 #' @param ... Other arguments to be passed to [data.table::fwrite].
 #' @param quote Whether to quote strings (default is `FALSE`).
+#' @param nThread Number of threads to use. Default uses all threads minus one.
 #'
 #' @return Input parameter `file`, invisibly.
 #' @export
 #'
-#' @inherit fread2 examples
+#' @examples
+#' tmp <- fwrite2(iris, tempfile())
+#' iris2 <- fread2(tmp)
+#' all.equal(iris2, iris)  ## fread doesn't use factors
 fwrite2 <- function(x, file, ...,
                     quote = FALSE,
                     nThread = getOption("bigreadr.nThread")) {
