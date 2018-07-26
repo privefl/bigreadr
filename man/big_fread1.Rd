@@ -8,15 +8,14 @@ big_fread1(file, every_nlines, .transform = identity,
   .combine = rbind_df, skip = 0, ..., print_timings = TRUE)
 }
 \arguments{
-\item{file}{Path to file that you want to split.}
+\item{file}{Path to file that you want to read.}
 
 \item{every_nlines}{Maximum number of lines in new file parts.}
 
 \item{.transform}{Function to transform each data frame corresponding to each
 part of the \code{file}. Default doesn't change anything.}
 
-\item{.combine}{Function to combine results. Should accept multiple arguments
-(\code{...}) such as \code{rbind_df} (the default).}
+\item{.combine}{Function to combine results (list of data frames).}
 
 \item{skip}{Number of lines to skip at the beginning of \code{file}.}
 

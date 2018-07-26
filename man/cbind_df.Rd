@@ -4,17 +4,18 @@
 \alias{cbind_df}
 \title{Merge data frames}
 \usage{
-cbind_df(...)
+cbind_df(list_df)
 }
 \arguments{
-\item{...}{Multiple data frames with the same observations in the same order.}
+\item{list_df}{A list of multiple data frames with the same observations in
+the same order.}
 }
 \value{
-One merged data frame with the names of the first input data frame.
+One merged data frame.
 }
 \description{
 Merge data frames
 }
 \examples{
-cbind_df(iris, iris)
+cbind_df(list(iris, iris))
 }

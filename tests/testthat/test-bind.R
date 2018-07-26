@@ -4,19 +4,62 @@ context("test-bind.R")
 
 ################################################################################
 
-test_that("No copies with 'cbind.data.frame'", {
+test_that("'cbind_df' works", {
+
+  # No copies with 'cbind.data.frame'
   iris$Species <- as.character(iris$Species)
   addr <- sapply(iris, data.table::address)
-  iris2 <- cbind_df(iris, iris)
+  iris2 <- cbind_df(list(iris, iris))
   expect_identical(sapply(iris2, data.table::address), c(addr, addr))
+
+  df <- datasets::iris
+  df2 <- cbind_df(list(df))
+  expect_identical(df2, df)
+  df3 <- cbind_df(list(df, df, df))
+  expect_equal(dim(df3), c(150, 15))
+  expect_identical(class(df3), "data.frame")
+
+  dt <- data.table::as.data.table(df)
+  dt2 <- cbind_df(list(dt))
+  expect_identical(class(dt2), c("data.table", "data.frame"))
+  expect_identical(dt2, dt)
+  dt3 <- cbind_df(list(dt, dt, dt))
+  expect_equal(dim(dt3), c(150, 15))
+  expect_identical(class(dt3), c("data.table", "data.frame"))
+
+  dt$Species <- as.character(df$Species)
+  df2 <- cbind_df(list(df))
+  expect_identical(df2, df)
+  df3 <- cbind_df(list(df, df, df))
+  expect_equal(dim(df3), c(150, 15))
+  expect_identical(class(df3), "data.frame")
 })
 
 ################################################################################
 
-test_that("My implementation of 'rbind' works", {
-  fct_merged <- unlist(list(factor(letters[1:3]), factor(letters[3:5])))
-  expect_identical(levels(fct_merged), letters[1:5])
-  expect_identical(rbind(iris, iris), rbind_df(iris, iris))
+test_that("'rbind_df' works", {
+
+  df <- datasets::iris
+  df2 <- rbind_df(list(df))
+  expect_identical(df2, df)
+  df3 <- rbind_df(list(df, df, df))
+  expect_equal(dim(df3), c(450, 5))
+  expect_identical(class(df3), "data.frame")
+
+  dt <- data.table::as.data.table(df)
+  dt2 <- rbind_df(list(dt))
+  expect_identical(class(dt2), c("data.table", "data.frame"))
+  expect_identical(dt2, dt)
+  dt3 <- rbind_df(list(dt, dt, dt))
+  expect_equal(dim(dt3), c(450, 5))
+  expect_identical(class(dt3), c("data.table", "data.frame"))
+
+  dt$Species <- as.character(df$Species)
+  df2 <- rbind_df(list(df))
+  expect_identical(df2, df)
+  df3 <- rbind_df(list(df, df, df))
+  expect_equal(dim(df3), c(450, 5))
+  expect_identical(class(df3), "data.frame")
 })
 
 ################################################################################

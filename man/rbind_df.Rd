@@ -4,10 +4,11 @@
 \alias{rbind_df}
 \title{Merge data frames}
 \usage{
-rbind_df(...)
+rbind_df(list_df)
 }
 \arguments{
-\item{...}{Multiple data frames with the same variables in the same order.}
+\item{list_df}{A list of multiple data frames with the same variables in the
+same order.}
 }
 \value{
 One merged data frame with the names of the first input data frame.
@@ -16,5 +17,5 @@ One merged data frame with the names of the first input data frame.
 Merge data frames
 }
 \examples{
-rbind_df(iris, iris)
+rbind_df(list(iris, iris))
 }

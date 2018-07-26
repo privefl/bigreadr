@@ -49,35 +49,44 @@ fwrite2 <- function(x, file, ...,
 
 #' Merge data frames
 #'
-#' @param ... Multiple data frames with the same variables in the same order.
+#' @param list_df A list of multiple data frames with the same variables in the
+#'   same order.
 #'
 #' @return One merged data frame with the names of the first input data frame.
 #' @export
 #'
 #' @examples
-#' rbind_df(iris, iris)
-rbind_df <- function(...) {
-  list_df <- list(...)
-  list_df_merged <- lapply(seq_along(list_df[[1]]), function(k) {
-    unlist(lapply(list_df, function(l) l[[k]]))
-  })
-  list_df_merged_named <- stats::setNames(list_df_merged, names(list_df[[1]]))
-  as.data.frame(list_df_merged_named, stringsAsFactors = FALSE)
+#' rbind_df(list(iris, iris))
+rbind_df <- function(list_df) {
+
+  first_df <- list_df[[1]]
+  if (data.table::is.data.table(first_df)) {
+    data.table::rbindlist(list_df)
+  } else if (is.data.frame(first_df)) {
+    list_df_merged <- lapply(seq_along(first_df), function(k) {
+      unlist(lapply(list_df, function(l) l[[k]]))
+    })
+    list_df_merged_named <- stats::setNames(list_df_merged, names(list_df[[1]]))
+    as.data.frame(list_df_merged_named)
+  } else {
+    stop2("'list_df' should contain data tables or data frames.")
+  }
 }
 
 ################################################################################
 
 #' Merge data frames
 #'
-#' @param ... Multiple data frames with the same observations in the same order.
+#' @param list_df A list of multiple data frames with the same observations in
+#'   the same order.
 #'
-#' @return One merged data frame with the names of the first input data frame.
+#' @return One merged data frame.
 #' @export
 #'
 #' @examples
-#' cbind_df(iris, iris)
-cbind_df <- function(...) {
-  cbind.data.frame(...)
+#' cbind_df(list(iris, iris))
+cbind_df <- function(list_df) {
+  do.call(cbind.data.frame, list_df)
 }
 
 ################################################################################
@@ -86,11 +95,11 @@ cbind_df <- function(...) {
 #'
 #' Read large text file by splitting lines.
 #'
+#' @param file Path to file that you want to read.
 #' @inheritParams split_file
 #' @param .transform Function to transform each data frame corresponding to each
 #'   part of the `file`. Default doesn't change anything.
-#' @param .combine Function to combine results. Should accept multiple arguments
-#'   (`...`) such as `rbind_df` (the default).
+#' @param .combine Function to combine results (list of data frames).
 #' @param skip Number of lines to skip at the beginning of `file`.
 #' @param ... Other arguments to be passed to [data.table::fread],
 #'   excepted `input`, `file`, `skip` and `col.names`.
@@ -135,7 +144,7 @@ big_fread1 <- function(file, every_nlines,
   print_proc("Reading + transforming other parts")
 
   ## Combine
-  res <- do.call(.combine, c(list(part1), other_parts))
+  res <- .combine(c(list(part1), other_parts))
 
   print_proc("Combining")
 
@@ -157,8 +166,7 @@ cut_in_nb <- function(x, nb) {
 #'   Parts are referring to blocks of selected columns.
 #' @param .transform Function to transform each data frame corresponding to each
 #'   block of selected columns. Default doesn't change anything.
-#' @param .combine Function to combine results. Should accept multiple arguments
-#'   (`...`) such as `cbind_df` (the default).
+#' @param .combine Function to combine results (list of data frames).
 #' @param skip Number of lines to skip at the beginning of `file`.
 #' @param select Indices of columns to keep. Default keeps them all.
 #' @param ... Other arguments to be passed to [data.table::fread],
@@ -185,7 +193,7 @@ big_fread2 <- function(file, nb_parts,
   })
 
   ## Combine
-  res <- do.call(.combine, unname(all_parts))
+  res <- .combine(unname(all_parts))
 
   ## Reorder
   res[, rank(select), drop = FALSE]

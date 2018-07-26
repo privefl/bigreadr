@@ -16,8 +16,7 @@ Parts are referring to blocks of selected columns.}
 \item{.transform}{Function to transform each data frame corresponding to each
 block of selected columns. Default doesn't change anything.}
 
-\item{.combine}{Function to combine results. Should accept multiple arguments
-(\code{...}) such as \code{cbind_df} (the default).}
+\item{.combine}{Function to combine results (list of data frames).}
 
 \item{skip}{Number of lines to skip at the beginning of \code{file}.}
 
