@@ -4,8 +4,8 @@
 \alias{big_fread2}
 \title{Read large text file}
 \usage{
-big_fread2(file, nb_parts, .transform = identity,
-  .combine = cbind.data.frame, skip = 0, select = NULL, ...)
+big_fread2(file, nb_parts, .transform = identity, .combine = cbind_df,
+  skip = 0, select = NULL, ...)
 }
 \arguments{
 \item{file}{Path to file that you want to read.}
@@ -17,7 +17,7 @@ Parts are referring to blocks of selected columns.}
 block of selected columns. Default doesn't change anything.}
 
 \item{.combine}{Function to combine results. Should accept multiple arguments
-(\code{...}) such as \code{rbind} (the default).}
+(\code{...}) such as \code{cbind_df} (the default).}
 
 \item{skip}{Number of lines to skip at the beginning of \code{file}.}
 

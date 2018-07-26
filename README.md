@@ -14,16 +14,30 @@ Read large text files based on splitting + `data.table::fread`
 # devtools::install_github("privefl/bigreadr")
 library(bigreadr)
 
-# Create a temporary file of ~360 MB (just as an example)
+# Create a temporary file of ~141 MB (just as an example)
 csv <- tempfile()
-fwrite2(iris[rep(seq_len(nrow(iris)), 1e5), ], csv)
+fwrite2(iris[rep(seq_len(nrow(iris)), 1e4), rep(1:5, 4)], csv)
 format(file.size(csv), big.mark = ",")
 
+## Splitting lines (1)
 # Read (by parts) all data -> using `fread` would be faster
-nlines(csv)  ## 15M lines -> split every 1M
-big_iris <- big_fread(csv, every_nlines = 1e6)
+nlines(csv)  ## 1M5 lines -> split every 500,000
+big_iris1 <- big_fread1(csv, every_nlines = 5e5)
 # Read and subset (by parts)
-big_iris_setosa <- big_fread(csv, every_nlines = 1e6, .transform = function(df) {
+big_iris1_setosa <- big_fread1(csv, every_nlines = 5e5, .transform = function(df) {
   dplyr::filter(df, Species == "setosa")
 })
+
+## Splitting columns (2)
+big_iris2 <- big_fread2(csv, nb_parts = 3)
+# Read and subset (by parts)
+species_setosa <- (fread2(csv, select = 5)[[1]] == "setosa")
+big_iris2_setosa <- big_fread2(csv, nb_parts = 3, .transform = function(df) {
+  dplyr::filter(df, species_setosa)
+})
+
+## Verification
+identical(big_iris1_setosa, dplyr::filter(big_iris1, Species == "setosa"))
+identical(big_iris2, big_iris1)
+identical(big_iris2_setosa, big_iris1_setosa)
 ```

@@ -55,14 +55,29 @@ fwrite2 <- function(x, file, ...,
 #' @export
 #'
 #' @examples
-#' my_rbind(iris, iris)
-my_rbind <- function(...) {
+#' rbind_df(iris, iris)
+rbind_df <- function(...) {
   list_df <- list(...)
   list_df_merged <- lapply(seq_along(list_df[[1]]), function(k) {
     do.call(c, lapply(list_df, function(l) l[[k]]))
   })
   list_df_merged_named <- stats::setNames(list_df_merged, names(list_df[[1]]))
   as.data.frame(list_df_merged_named, stringsAsFactors = FALSE)
+}
+
+################################################################################
+
+#' Merge data frames
+#'
+#' @param ... Multiple data frames with the same observations in the same order.
+#'
+#' @return One merged data frame with the names of the first input data frame.
+#' @export
+#'
+#' @examples
+#' cbind_df(iris, iris)
+cbind_df <- function(...) {
+  cbind.data.frame(...)
 }
 
 ################################################################################
@@ -75,7 +90,7 @@ my_rbind <- function(...) {
 #' @param .transform Function to transform each data frame corresponding to each
 #'   part of the `file`. Default doesn't change anything.
 #' @param .combine Function to combine results. Should accept multiple arguments
-#'   (`...`) such as `rbind` (the default).
+#'   (`...`) such as `rbind_df` (the default).
 #' @param skip Number of lines to skip at the beginning of `file`.
 #' @param ... Other arguments to be passed to [data.table::fread],
 #'   excepted `input`, `file`, `skip` and `col.names`.
@@ -84,8 +99,8 @@ my_rbind <- function(...) {
 #' @inherit fread2 return
 #' @export
 #'
-big_fread <- function(file, every_nlines,
-                      .transform = identity, .combine = my_rbind,
+big_fread1 <- function(file, every_nlines,
+                      .transform = identity, .combine = rbind_df,
                       skip = 0, ...,
                       print_timings = TRUE) {
 
@@ -143,7 +158,7 @@ cut_in_nb <- function(x, nb) {
 #' @param .transform Function to transform each data frame corresponding to each
 #'   block of selected columns. Default doesn't change anything.
 #' @param .combine Function to combine results. Should accept multiple arguments
-#'   (`...`) such as `rbind` (the default).
+#'   (`...`) such as `cbind_df` (the default).
 #' @param skip Number of lines to skip at the beginning of `file`.
 #' @param select Indices of columns to keep. Default keeps them all.
 #' @param ... Other arguments to be passed to [data.table::fread],
@@ -154,7 +169,7 @@ cut_in_nb <- function(x, nb) {
 #'
 big_fread2 <- function(file, nb_parts,
                        .transform = identity,
-                       .combine = cbind.data.frame,
+                       .combine = cbind_df,
                        skip = 0, select = NULL, ...) {
 
   ## Split selected columns in nb_parts
