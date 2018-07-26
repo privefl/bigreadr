@@ -69,7 +69,7 @@ my_rbind <- function(...) {
 
 #' Read large text file
 #'
-#' Read large text file by flitting it before.
+#' Read large text file by splitting lines.
 #'
 #' @inheritParams split_file
 #' @param .transform Function to transform each data frame corresponding to each
@@ -81,7 +81,7 @@ my_rbind <- function(...) {
 #'   excepted `input`, `file`, `skip` and `col.names`.
 #' @param print_timings Whether to print timings? Default is `TRUE`.
 #'
-#' @return A vector of paths to the new files.
+#' @inherit fread2 return
 #' @export
 #'
 big_fread <- function(file, every_nlines,
@@ -119,12 +119,61 @@ big_fread <- function(file, every_nlines,
 
   print_proc("Reading + transforming other parts")
 
-  ## Combine + transform all parts
+  ## Combine
   res <- do.call(.combine, c(list(part1), other_parts))
 
   print_proc("Combining")
 
   res
+}
+
+################################################################################
+
+cut_in_nb <- function(x, nb) {
+  split(x, sort(rep_len(seq_len(nb), length(x))))
+}
+
+#' Read large text file
+#'
+#' Read large text file by splitting columns.
+#'
+#' @param file Path to file that you want to read.
+#' @param nb_parts Number of parts in which to split reading (and transforming).
+#'   Parts are referring to blocks of selected columns.
+#' @param .transform Function to transform each data frame corresponding to each
+#'   block of selected columns. Default doesn't change anything.
+#' @param .combine Function to combine results. Should accept multiple arguments
+#'   (`...`) such as `rbind` (the default).
+#' @param skip Number of lines to skip at the beginning of `file`.
+#' @param select Indices of columns to keep. Default keeps them all.
+#' @param ... Other arguments to be passed to [data.table::fread],
+#'   excepted `input`, `file`, `skip` and `select`.
+#'
+#' @inherit fread2 return
+#' @export
+#'
+big_fread2 <- function(file, nb_parts,
+                       .transform = identity,
+                       .combine = cbind.data.frame,
+                       skip = 0, select = NULL, ...) {
+
+  ## Split selected columns in nb_parts
+  if (is.null(select)) {
+    nb_cols <- ncol(fread2(file, nrows = 1, skip = skip, ...))
+    select <- seq_len(nb_cols)
+  }
+  split_cols <- cut_in_nb(sort(select), nb_parts)
+
+  ## Read + transform other parts
+  all_parts <- lapply(split_cols, function(cols) {
+    .transform(fread2(file, skip = skip, select = cols, ...))
+  })
+
+  ## Combine
+  res <- do.call(.combine, unname(all_parts))
+
+  ## Reorder
+  `[.data.frame`(res, rank(select))
 }
 
 ################################################################################

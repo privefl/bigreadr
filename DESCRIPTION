@@ -14,8 +14,10 @@ Imports:
     data.table,
     Rcpp,
     parallel
-Suggests: 
+Suggests:
+    spelling, 
     testthat,
     covr
 LinkingTo: 
     Rcpp
+Language: en-US

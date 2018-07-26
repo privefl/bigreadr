@@ -26,8 +26,8 @@ excepted \code{input}, \code{file}, \code{skip} and \code{col.names}.}
 \item{print_timings}{Whether to print timings? Default is \code{TRUE}.}
 }
 \value{
-A vector of paths to the new files.
+A \code{data.frame} by default; a \code{data.table} when \code{data.table = TRUE}.
 }
 \description{
-Read large text file by flitting it before.
+Read large text file by splitting lines.
 }
