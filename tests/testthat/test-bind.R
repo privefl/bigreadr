@@ -12,6 +12,7 @@ test_that("'cbind_df' works", {
   iris2 <- cbind_df(list(iris, iris))
   expect_identical(sapply(iris2, data.table::address), c(addr, addr))
 
+  # Data frame with factors
   df <- datasets::iris
   df2 <- cbind_df(list(df))
   expect_identical(df2, df)
@@ -19,6 +20,7 @@ test_that("'cbind_df' works", {
   expect_equal(dim(df3), c(150, 15))
   expect_identical(class(df3), "data.frame")
 
+  # Data table
   dt <- data.table::as.data.table(df)
   dt2 <- cbind_df(list(dt))
   expect_identical(class(dt2), c("data.table", "data.frame"))
@@ -27,6 +29,7 @@ test_that("'cbind_df' works", {
   expect_equal(dim(dt3), c(150, 15))
   expect_identical(class(dt3), c("data.table", "data.frame"))
 
+  # Data frame without factors
   df$Species <- as.character(df$Species)
   df2 <- cbind_df(list(df))
   expect_identical(df2, df)
@@ -39,6 +42,7 @@ test_that("'cbind_df' works", {
 
 test_that("'rbind_df' works", {
 
+  # Data frame with factors
   df <- datasets::iris
   df2 <- rbind_df(list(df))
   expect_identical(df2, df)
@@ -46,6 +50,7 @@ test_that("'rbind_df' works", {
   expect_equal(dim(df3), c(450, 5))
   expect_identical(class(df3), "data.frame")
 
+  # Data table
   dt <- data.table::as.data.table(df)
   dt2 <- rbind_df(list(dt))
   expect_identical(class(dt2), c("data.table", "data.frame"))
@@ -54,6 +59,7 @@ test_that("'rbind_df' works", {
   expect_equal(dim(dt3), c(450, 5))
   expect_identical(class(dt3), c("data.table", "data.frame"))
 
+  # Data frame without factors
   df$Species <- as.character(df$Species)
   df2 <- rbind_df(list(df))
   expect_identical(df2, df)
