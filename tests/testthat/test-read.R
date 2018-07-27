@@ -32,6 +32,8 @@ test_that("'big_fread1' works", {
   iris4 <- big_fread1(file = csv, 50, print_timings = FALSE,
                       .transform = function(df) subset(df, Species == "virginica"))
   expect_equal(iris4, subset(iris, Species == "virginica"), check.attributes = FALSE)
+
+  expect_message(big_fread1(file = csv, 50, print_timings = TRUE), "seconds")
 })
 
 ################################################################################

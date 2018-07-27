@@ -66,6 +66,10 @@ test_that("'rbind_df' works", {
   df3 <- rbind_df(list(df, df, df))
   expect_equal(dim(df3), c(450, 5))
   expect_identical(class(df3), "data.frame")
+
+  # Error
+  expect_error(rbind_df(list(as.matrix(iris), iris)),
+               "'list_df' should contain data tables or data frames.", fixed = TRUE)
 })
 
 ################################################################################
