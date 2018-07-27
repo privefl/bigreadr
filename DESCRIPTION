@@ -13,7 +13,8 @@ RoxygenNote: 6.1.0
 Imports: 
     data.table,
     Rcpp,
-    parallel
+    parallel,
+    fpeek
 Suggests:
     spelling, 
     testthat,

@@ -20,7 +20,7 @@ block of selected columns. Default doesn't change anything.}
 
 \item{skip}{Number of lines to skip at the beginning of \code{file}.}
 
-\item{select}{Indices of columns to keep. Default keeps them all.}
+\item{select}{Indices of columns to keep (sorted). Default keeps them all.}
 
 \item{...}{Other arguments to be passed to \link[data.table:fread]{data.table::fread},
 excepted \code{input}, \code{file}, \code{skip} and \code{select}.}

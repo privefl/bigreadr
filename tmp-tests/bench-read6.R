@@ -1,22 +1,21 @@
 library(bigreadr)
 
-long <- TRUE
+long <- FALSE
 if (long) {
   csv2 <- "tmp-data/mtcars-long.csv"
-  block <- 100e4
+  block <- 1e6
   M <- 11
   block2 <- 3
 } else {
   csv2 <- "tmp-data/mtcars-wide.csv"
-  block <- 100
-  M <- 11e4
+  block <- 1e3
+  M <- 11e3
   block2 <- 3
 }
 
 
 library(bigstatsr)
-system.time(n1 <- bigstatsr::nlines(csv2))
-system.time(n2 <- bigreadr::nlines(csv2))
+(n1 <- bigreadr::nlines(csv2))
 
 # debugonce(big_read)
 # tmp <- gc(reset = TRUE)
@@ -33,10 +32,10 @@ system.time({
   offset <- 0
   test2 <- big_fread1(csv2, block, .transform = function(df) {
     ind <- rows_along(df)
-    X[offset + ind, ] <- do.call(cbind, df)
+    X[offset + ind, ] <- as.matrix(df)
     offset <<- offset + length(ind)
     NULL
-  }, .combine = 'c')
+  }, .combine = c)
 }) # 16 sec  //  122 sec
 gc() - tmp
 
@@ -51,10 +50,15 @@ system.time({
   test3 <- big_fread2(csv2, block2, .transform = function(df) {
     print(offset)
     ind <- cols_along(df)
-    X2[, offset + ind] <- do.call(cbind, df)
+    X2[, offset + ind] <- as.matrix(df)
     offset <<- offset + length(ind)
     NULL
-  }, .combine = 'c')
+  }, .combine = c)
 }) # 16 sec  //  122 sec
 gc() - tmp
+
+all.equal(dim(X2),  dim(X))
+all.equal(X2[, 1],  X[, 1])
+all.equal(X2[, 11], X[, 11])
+all.equal(X2[, M],  X[, M])
 

@@ -44,7 +44,7 @@ system.time(system(cmd)) # 1.4
 
 ## LARGE CSV
 csv3 <- "tmp-data/mtcars-wide.csv"
-data.table::fwrite(df[rep(seq_len(nrow(df)), 50), rep(seq_len(ncol(df)), 10000)], csv3,
+data.table::fwrite(df[rep(seq_len(nrow(df)), 500), rep(seq_len(ncol(df)), 1000)], csv3,
                    quote = FALSE, row.names = FALSE)
 
 system.time(

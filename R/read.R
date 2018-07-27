@@ -168,7 +168,7 @@ cut_in_nb <- function(x, nb) {
 #'   block of selected columns. Default doesn't change anything.
 #' @param .combine Function to combine results (list of data frames).
 #' @param skip Number of lines to skip at the beginning of `file`.
-#' @param select Indices of columns to keep. Default keeps them all.
+#' @param select Indices of columns to keep (sorted). Default keeps them all.
 #' @param ... Other arguments to be passed to [data.table::fread],
 #'   excepted `input`, `file`, `skip` and `select`.
 #'
@@ -184,8 +184,11 @@ big_fread2 <- function(file, nb_parts,
   if (is.null(select)) {
     nb_cols <- ncol(fread2(file, nrows = 1, skip = skip, ...))
     select <- seq_len(nb_cols)
+  } else {
+    if (is.unsorted(select, strictly = TRUE))
+      stop2("Argument 'select' should be sorted.")
   }
-  split_cols <- cut_in_nb(sort(select), nb_parts)
+  split_cols <- cut_in_nb(select, nb_parts)
 
   ## Read + transform other parts
   all_parts <- lapply(split_cols, function(cols) {
@@ -193,10 +196,7 @@ big_fread2 <- function(file, nb_parts,
   })
 
   ## Combine
-  res <- .combine(unname(all_parts))
-
-  ## Reorder
-  res[, rank(select), drop = FALSE]
+  .combine(unname(all_parts))
 }
 
 ################################################################################
