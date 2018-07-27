@@ -14,8 +14,8 @@ test_that("'split_file' works", {
     infos <- split_file(tmp, every, tmp2 <- tempfile())
     files <- get_split_files(infos)
     expect_true(all(file.exists(files)))
-    expect_equal(infos[["name_in"]], tmp)
-    expect_equal(infos[["prefix_out"]], tmp2)
+    expect_identical(infos[["name_in"]], tmp)
+    expect_identical(infos[["prefix_out"]], tmp2)
     expect_equal(ceiling(infos[["nlines_all"]] / infos[["nlines_part"]]),
                  infos[["nfiles"]])
     expect_identical(infos[["nlines_all"]], 24L)
