@@ -12,9 +12,9 @@ assert_exist <- function(file) {
     stop2("File '%s' doesn't exist.", file)
 }
 
-assert_noexist <- function(file) {
-  if (file.exists(file))
-    stop2("File '%s' already exists.", file)
-}
+# assert_noexist <- function(file) {
+#   if (file.exists(file))
+#     stop2("File '%s' already exists.", file)
+# }
 
 ################################################################################

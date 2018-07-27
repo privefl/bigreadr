@@ -73,6 +73,11 @@ List split_every_nlines(std::string name_in,
     // Close file number 'k'
     fflush(fp_out);
     fclose(fp_out);
+    if (i == 0) {
+      // nothing has been written because of EOF
+      remove(name_out);
+      k--;
+    }
 
   }
 
