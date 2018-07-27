@@ -8,6 +8,14 @@
 \description{
 Read large text files by splitting them in smaller files.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/privefl/bigreadr}
+  \item Report bugs at \url{https://github.com/privefl/bigreadr/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Florian Privé \email{florian.prive.21@gmail.com}
 

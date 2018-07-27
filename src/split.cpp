@@ -72,7 +72,7 @@ List split_every_nlines(std::string name_in,
     fflush(fp_out);
     fclose(fp_out);
     if (i == 0) {
-      // nothing has been written because of EOF
+      // nothing has been written because of EOF -> rm file
       remove(name_out);
       k--;
     }
@@ -85,11 +85,11 @@ List split_every_nlines(std::string name_in,
   delete[] line;
 
   return List::create(
-    _["name_in"] = name_in,
-    _["prefix_out"] = prefix_out,
-    _["nfiles"] = k,
+    _["name_in"]     = name_in,
+    _["prefix_out"]  = prefix_out,
+    _["nfiles"]      = k,
     _["nlines_part"] = every_nlines,
-    _["nlines_all"] = c
+    _["nlines_all"]  = c
   );
 }
 

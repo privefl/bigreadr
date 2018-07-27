@@ -6,3 +6,5 @@
 ^appveyor\.yml$
 ^codecov\.yml$
 ^tmp-save$
+^_pkgdown\.yml$
+^docs$
