@@ -27,7 +27,7 @@ test_that("'cbind_df' works", {
   expect_equal(dim(dt3), c(150, 15))
   expect_identical(class(dt3), c("data.table", "data.frame"))
 
-  dt$Species <- as.character(df$Species)
+  df$Species <- as.character(df$Species)
   df2 <- cbind_df(list(df))
   expect_identical(df2, df)
   df3 <- cbind_df(list(df, df, df))
@@ -54,7 +54,7 @@ test_that("'rbind_df' works", {
   expect_equal(dim(dt3), c(450, 5))
   expect_identical(class(dt3), c("data.table", "data.frame"))
 
-  dt$Species <- as.character(df$Species)
+  df$Species <- as.character(df$Species)
   df2 <- rbind_df(list(df))
   expect_identical(df2, df)
   df3 <- rbind_df(list(df, df, df))

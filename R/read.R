@@ -67,7 +67,7 @@ rbind_df <- function(list_df) {
       unlist(lapply(list_df, function(l) l[[k]]))
     })
     list_df_merged_named <- stats::setNames(list_df_merged, names(list_df[[1]]))
-    as.data.frame(list_df_merged_named)
+    as.data.frame(list_df_merged_named, stringsAsFactors = FALSE)
   } else {
     stop2("'list_df' should contain data tables or data frames.")
   }
@@ -109,9 +109,9 @@ cbind_df <- function(list_df) {
 #' @export
 #'
 big_fread1 <- function(file, every_nlines,
-                      .transform = identity, .combine = rbind_df,
-                      skip = 0, ...,
-                      print_timings = TRUE) {
+                       .transform = identity, .combine = rbind_df,
+                       skip = 0, ...,
+                       print_timings = TRUE) {
 
   begin <- proc.time()[3]
   print_proc <- function(action) {

@@ -11,7 +11,7 @@ test_that("'nlines' works", {
   }))
   replicate(10, {
     writeLines(sample(strings, replace = TRUE), tmp <- tempfile())
-    expect_identical(nlines(tmp), 24)
+    expect_identical(nlines(tmp), 24L)
   })
 })
 
