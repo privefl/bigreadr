@@ -16,8 +16,7 @@ Read large text files based on splitting + `data.table::fread`
 library(bigreadr)
 
 # Create a temporary file of ~141 MB (just as an example)
-csv <- tempfile()
-fwrite2(iris[rep(seq_len(nrow(iris)), 1e4), rep(1:5, 4)], csv)
+csv <- fwrite2(iris[rep(seq_len(nrow(iris)), 1e4), rep(1:5, 4)], tempfile())
 format(file.size(csv), big.mark = ",")
 
 ## Splitting lines (1)

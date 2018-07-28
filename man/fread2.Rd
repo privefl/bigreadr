@@ -24,7 +24,7 @@ A \code{data.frame} by default; a \code{data.table} when \code{data.table = TRUE
 Read a text file
 }
 \examples{
-tmp <- fwrite2(iris, tempfile())
+tmp <- fwrite2(iris)
 iris2 <- fread2(tmp)
 all.equal(iris2, iris)  ## fread doesn't use factors
 }

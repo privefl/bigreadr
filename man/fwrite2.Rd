@@ -4,13 +4,14 @@
 \alias{fwrite2}
 \title{Write a data frame to a text file}
 \usage{
-fwrite2(x, file, ..., quote = FALSE,
+fwrite2(x, file = tempfile(), ..., quote = FALSE,
   nThread = getOption("bigreadr.nThread"))
 }
 \arguments{
 \item{x}{Data frame to write.}
 
-\item{file}{Path to the file that you want to write to.}
+\item{file}{Path to the file that you want to write to.
+Defaults uses \code{tempfile()}.}
 
 \item{...}{Other arguments to be passed to \link[data.table:fwrite]{data.table::fwrite}.}
 
@@ -25,7 +26,7 @@ Input parameter \code{file}, invisibly.
 Write a data frame to a text file
 }
 \examples{
-tmp <- fwrite2(iris, tempfile())
+tmp <- fwrite2(iris)
 iris2 <- fread2(tmp)
 all.equal(iris2, iris)  ## fread doesn't use factors
 }

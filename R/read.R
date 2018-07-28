@@ -12,7 +12,7 @@
 #' @export
 #'
 #' @examples
-#' tmp <- fwrite2(iris, tempfile())
+#' tmp <- fwrite2(iris)
 #' iris2 <- fread2(tmp)
 #' all.equal(iris2, iris)  ## fread doesn't use factors
 fread2 <- function(file, ...,
@@ -26,6 +26,7 @@ fread2 <- function(file, ...,
 #'
 #' @param x Data frame to write.
 #' @param file Path to the file that you want to write to.
+#'   Defaults uses `tempfile()`.
 #' @param ... Other arguments to be passed to [data.table::fwrite].
 #' @param quote Whether to quote strings (default is `FALSE`).
 #' @param nThread Number of threads to use. Default uses all threads minus one.
@@ -34,10 +35,10 @@ fread2 <- function(file, ...,
 #' @export
 #'
 #' @examples
-#' tmp <- fwrite2(iris, tempfile())
+#' tmp <- fwrite2(iris)
 #' iris2 <- fread2(tmp)
 #' all.equal(iris2, iris)  ## fread doesn't use factors
-fwrite2 <- function(x, file, ...,
+fwrite2 <- function(x, file = tempfile(), ...,
                     quote = FALSE,
                     nThread = getOption("bigreadr.nThread")) {
 

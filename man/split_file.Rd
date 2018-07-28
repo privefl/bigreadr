@@ -36,7 +36,7 @@ Split file every nlines
 Get files from splitting.
 }
 \examples{
-tmp <- fwrite2(iris, tempfile())
+tmp <- fwrite2(iris)
 infos <- split_file(tmp, 100)
 str(infos)
 get_split_files(infos)

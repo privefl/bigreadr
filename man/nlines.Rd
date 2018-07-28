@@ -16,6 +16,6 @@ The number of lines as one integer.
 Get the number of lines of a file using R package {fpeek}.
 }
 \examples{
-csv <- fwrite2(iris, tempfile(fileext = "csv"))
-nlines(csv)
+tmp <- fwrite2(iris)
+nlines(tmp)
 }

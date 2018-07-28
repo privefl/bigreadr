@@ -10,8 +10,8 @@
 #' @export
 #'
 #' @examples
-#' csv <- fwrite2(iris, tempfile(fileext = "csv"))
-#' nlines(csv)
+#' tmp <- fwrite2(iris)
+#' nlines(tmp)
 nlines <- function(file) {
   fpeek::peek_count_lines(file)
 }
