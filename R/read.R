@@ -65,7 +65,7 @@ rbind_df <- function(list_df) {
     data.table::rbindlist(list_df)
   } else if (is.data.frame(first_df)) {
     list_df_merged <- lapply(seq_along(first_df), function(k) {
-      unlist(lapply(list_df, function(l) l[[k]]))
+      unlist(lapply(list_df, function(l) l[[k]]), recursive = FALSE)
     })
     list_df_merged_named <- stats::setNames(list_df_merged, names(list_df[[1]]))
     as.data.frame(list_df_merged_named, stringsAsFactors = FALSE)
