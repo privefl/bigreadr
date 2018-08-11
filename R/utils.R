@@ -16,3 +16,19 @@ assert_exist <- function(file) {
 # }
 
 ################################################################################
+
+# INTEGERS
+assert_int <- function(x) {
+  if (!is.null(x) && any(x != trunc(x)))
+    stop2("'%s' should contain only integers.", deparse(substitute(x)))
+}
+
+################################################################################
+
+# POSITIVE INDICES
+assert_pos <- function(x)  {
+  if (!all(x > 0))
+    stop2("'%s' should have only positive values.", deparse(substitute(x)))
+}
+
+################################################################################

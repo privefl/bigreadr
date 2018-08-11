@@ -165,35 +165,58 @@ cut_in_nb <- function(x, nb) {
 #' @param file Path to file that you want to read.
 #' @param nb_parts Number of parts in which to split reading (and transforming).
 #'   Parts are referring to blocks of selected columns.
+#'   Default uses global option `bigreadr.part.size` to set a good value.
 #' @param .transform Function to transform each data frame corresponding to each
 #'   block of selected columns. Default doesn't change anything.
 #' @param .combine Function to combine results (list of data frames).
 #' @param skip Number of lines to skip at the beginning of `file`.
 #' @param select Indices of columns to keep (sorted). Default keeps them all.
 #' @param ... Other arguments to be passed to [data.table::fread],
-#'   excepted `input`, `file`, `skip` and `select`.
+#'   excepted `input`, `file`, `skip`, `select` and `showProgress`.
+#' @param progress Show progress? Default is `FALSE`.
 #'
 #' @inherit fread2 return
 #' @export
 #'
-big_fread2 <- function(file, nb_parts,
+big_fread2 <- function(file, nb_parts = NULL,
                        .transform = identity,
                        .combine = cbind_df,
-                       skip = 0, select = NULL, ...) {
+                       skip = 0,
+                       select = NULL,
+                       progress = FALSE,
+                       ...) {
 
+  assert_exist(file)
   ## Split selected columns in nb_parts
   if (is.null(select)) {
     nb_cols <- ncol(fread2(file, nrows = 1, skip = skip, ...))
     select <- seq_len(nb_cols)
   } else {
+    assert_int(select); assert_pos(select)
     if (is.unsorted(select, strictly = TRUE))
       stop2("Argument 'select' should be sorted.")
   }
+  # Number of parts
+  if (is.null(nb_parts)) {
+    nb_parts <- ceiling(file.size(file) / getOption("bigreadr.part.size"))
+    if (progress) message2("Will read the file in %d parts.", nb_parts)
+  }
   split_cols <- cut_in_nb(select, nb_parts)
 
+  if (progress) {
+    pb <- utils::txtProgressBar(min = 0, max = length(select), style = 3)
+    on.exit(close(pb), add = TRUE)
+  }
+
   ## Read + transform other parts
+  already_read <- 0
   all_parts <- lapply(split_cols, function(cols) {
-    .transform(fread2(file, skip = skip, select = cols, ...))
+    part <- .transform(
+      fread2(file, skip = skip, select = cols, ..., showProgress = FALSE)
+    )
+    already_read <<- already_read + length(cols)
+    if (progress) utils::setTxtProgressBar(pb, already_read)
+    part
   })
 
   ## Combine

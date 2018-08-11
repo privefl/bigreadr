@@ -14,7 +14,8 @@ Imports:
     data.table,
     Rcpp,
     parallel,
-    fpeek
+    fpeek,
+    utils
 Suggests:
     spelling, 
     testthat,
