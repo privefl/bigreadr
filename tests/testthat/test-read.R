@@ -40,20 +40,22 @@ test_that("'big_fread1' works", {
 
 test_that("'big_fread2' works", {
 
-  iris1 <- big_fread2(file = csv, 1)
-  expect_identical(iris1, iris)
+  for (nb_parts in 1:7) {
+    iris1 <- big_fread2(file = csv, nb_parts)
+    expect_identical(iris1, iris)
 
-  ind2 <- 1
-  iris2 <- big_fread2(file = csv, 2, select = ind2, skip = 0)
-  expect_identical(iris2, iris[ind2])
+    ind2 <- 1
+    iris2 <- big_fread2(file = csv, nb_parts, select = ind2, skip = 0)
+    expect_identical(iris2, iris[ind2])
 
-  ind3 <- 1:4
-  iris3 <- big_fread2(file = csv, 7, select = ind3, skip = 1)
-  expect_equal(iris3, iris[ind3], check.attributes = FALSE)
-  expect_identical(names(iris3), paste0("V", ind3))
+    ind3 <- 1:4
+    iris3 <- big_fread2(file = csv, nb_parts, select = ind3, skip = 1)
+    expect_equal(iris3, iris[ind3], check.attributes = FALSE)
+    expect_identical(names(iris3), paste0("V", ind3))
 
-  expect_error(big_fread2(file = csv, 2, select = c(4, 1:3), skip = 0),
-               "Argument 'select' should be sorted.", fixed = TRUE)
+    expect_error(big_fread2(file = csv, nb_parts, select = c(4, 1:3), skip = 0),
+                 "Argument 'select' should be sorted.", fixed = TRUE)
+  }
 })
 
 ################################################################################
