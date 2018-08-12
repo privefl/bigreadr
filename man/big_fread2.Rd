@@ -6,14 +6,14 @@
 \usage{
 big_fread2(file, nb_parts = NULL, .transform = identity,
   .combine = cbind_df, skip = 0, select = NULL, progress = FALSE,
-  ...)
+  part_size = 500 * 1024^2, ...)
 }
 \arguments{
 \item{file}{Path to file that you want to read.}
 
 \item{nb_parts}{Number of parts in which to split reading (and transforming).
 Parts are referring to blocks of selected columns.
-Default use global option \code{bigreadr.part.size} to set a good value.}
+Default uses \code{part_size} to set a good value.}
 
 \item{.transform}{Function to transform each data frame corresponding to each
 block of selected columns. Default doesn't change anything.}
@@ -26,11 +26,14 @@ block of selected columns. Default doesn't change anything.}
 
 \item{progress}{Show progress? Default is \code{FALSE}.}
 
+\item{part_size}{Size of the parts if \code{nb_parts} is not supplied.
+Default is \code{500 * 1024^2} (500 MB).}
+
 \item{...}{Other arguments to be passed to \link[data.table:fread]{data.table::fread},
 excepted \code{input}, \code{file}, \code{skip}, \code{select} and \code{showProgress}.}
 }
 \value{
-A \code{data.frame} by default; a \code{data.table} when \code{data.table = TRUE}.
+The outputs of \code{fread2} + \code{.transform}, combined with \code{.combine}.
 }
 \description{
 Read large text file by splitting columns.

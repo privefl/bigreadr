@@ -165,7 +165,7 @@ cut_in_nb <- function(x, nb) {
 #' @param file Path to file that you want to read.
 #' @param nb_parts Number of parts in which to split reading (and transforming).
 #'   Parts are referring to blocks of selected columns.
-#'   Default uses global option `bigreadr.part.size` to set a good value.
+#'   Default uses `part_size` to set a good value.
 #' @param .transform Function to transform each data frame corresponding to each
 #'   block of selected columns. Default doesn't change anything.
 #' @param .combine Function to combine results (list of data frames).
@@ -174,8 +174,10 @@ cut_in_nb <- function(x, nb) {
 #' @param ... Other arguments to be passed to [data.table::fread],
 #'   excepted `input`, `file`, `skip`, `select` and `showProgress`.
 #' @param progress Show progress? Default is `FALSE`.
+#' @param part_size Size of the parts if `nb_parts` is not supplied.
+#'   Default is `500 * 1024^2` (500 MB).
 #'
-#' @inherit fread2 return
+#' @return The outputs of `fread2` + `.transform`, combined with `.combine`.
 #' @export
 #'
 big_fread2 <- function(file, nb_parts = NULL,
@@ -184,6 +186,7 @@ big_fread2 <- function(file, nb_parts = NULL,
                        skip = 0,
                        select = NULL,
                        progress = FALSE,
+                       part_size = 500 * 1024^2,  ## 500 MB
                        ...) {
 
   assert_exist(file)
@@ -198,7 +201,7 @@ big_fread2 <- function(file, nb_parts = NULL,
   }
   # Number of parts
   if (is.null(nb_parts)) {
-    nb_parts <- ceiling(file.size(file) / getOption("bigreadr.part.size"))
+    nb_parts <- ceiling(file.size(file) / part_size)
     if (progress) message2("Will read the file in %d parts.", nb_parts)
   }
   split_cols <- cut_in_nb(select, nb_parts)
