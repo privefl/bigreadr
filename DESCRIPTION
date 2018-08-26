@@ -19,7 +19,8 @@ Imports:
 Suggests:
     spelling, 
     testthat,
-    covr
+    covr,
+    RSQLite
 LinkingTo: 
     Rcpp
 Language: en-US

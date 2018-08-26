@@ -8,3 +8,4 @@
 ^tmp-save$
 ^_pkgdown\.yml$
 ^docs$
+^vignettes$

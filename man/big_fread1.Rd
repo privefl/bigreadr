@@ -20,7 +20,7 @@ part of the \code{file}. Default doesn't change anything.}
 \item{skip}{Number of lines to skip at the beginning of \code{file}.}
 
 \item{...}{Other arguments to be passed to \link[data.table:fread]{data.table::fread},
-excepted \code{input}, \code{file}, \code{skip} and \code{col.names}.}
+excepted \code{input}, \code{file}, \code{skip}, \code{col.names} and \code{showProgress}.}
 
 \item{print_timings}{Whether to print timings? Default is \code{TRUE}.}
 }

@@ -41,3 +41,9 @@ identical(big_iris1_setosa, dplyr::filter(big_iris1, Species == "setosa"))
 identical(big_iris2, big_iris1)
 identical(big_iris2_setosa, big_iris1_setosa)
 ```
+
+## Use cases
+
+Please send me your use cases!
+
+- [Convert a CSV to SQLite by parts](https://privefl.github.io/bigreadr/articles/csv2sqlite.html)

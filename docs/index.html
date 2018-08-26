@@ -29,7 +29,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">bigreadr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.4</span>
       </span>
     </div>
 
@@ -43,6 +43,18 @@
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/csv2sqlite.html">Convert a CSV to SQLite by parts</a>
+    </li>
+  </ul>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -76,8 +88,7 @@
 library(bigreadr)
 
 # Create a temporary file of ~141 MB (just as an example)
-csv &lt;- tempfile()
-fwrite2(iris[rep(seq_len(nrow(iris)), 1e4), rep(1:5, 4)], csv)
+csv &lt;- fwrite2(iris[rep(seq_len(nrow(iris)), 1e4), rep(1:5, 4)], tempfile())
 format(file.size(csv), big.mark = ",")
 
 ## Splitting lines (1)
@@ -102,6 +113,14 @@ identical(big_iris1_setosa, dplyr::filter(big_iris1, Species == "setosa"))
 identical(big_iris2, big_iris1)
 identical(big_iris2_setosa, big_iris1_setosa)</code></pre>
 </div>
+<div id="use-cases" class="section level2">
+<h2 class="hasAnchor">
+<a href="#use-cases" class="anchor"></a>Use cases</h2>
+<p>Please send me your use cases!</p>
+<ul>
+<li><a href="https://privefl.github.io/bigreadr/articles/csv2sqlite.html">Convert a CSV to SQLite by parts</a></li>
+</ul>
+</div>
 </div>
 
   </div>
@@ -110,6 +129,8 @@ identical(big_iris2_setosa, big_iris1_setosa)</code></pre>
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=bigreadr">https://​cloud.r-project.org/​package=bigreadr</a>
+</li>
 <li>Browse source code at <br><a href="https://github.com/privefl/bigreadr">https://​github.com/​privefl/​bigreadr</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/privefl/bigreadr/issues">https://​github.com/​privefl/​bigreadr/​issues</a>

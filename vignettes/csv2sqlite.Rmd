@@ -1,0 +1,62 @@
+---
+title: "Convert a CSV to SQLite by parts"
+author: "Florian Privé"
+date: "August 26, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = "center", eval = FALSE)
+```
+
+## How
+
+You can easily use this package {bigreadr} to convert a CSV to an SQLite database without loading the whole CSV in memory.
+
+You can use the following function:
+
+```{r}
+csv2sqlite <- function(csv,
+                       every_nlines,
+                       table_name,
+                       dbname = sub("\\.csv$", ".sqlite", csv),
+                       ...) {
+  
+  # Prepare reading
+  con <- RSQLite::dbConnect(RSQLite::SQLite(), dbname)
+  init <- TRUE
+  fill_sqlite <- function(df) {
+    
+    if (init) {
+      RSQLite::dbCreateTable(con, table_name, df)
+      init <<- FALSE
+    }
+    
+    RSQLite::dbAppendTable(con, table_name, df)
+    NULL
+  }
+  
+  # Read and fill by parts
+  bigreadr::big_fread1(csv, every_nlines,
+                       .transform = fill_sqlite,
+                       .combine = unlist,
+                       ... = ...)
+  
+  # Returns
+  con
+}
+```
+
+Function `bigreadr::big_fread1()` first splits the CSV files in smaller CSV files, then it reads these CSV files as data frames and transform them, and finally combine the results.
+
+Here, the transformation is just appending the data frame to the SQLite database (and creating this DB the first time). Moreover, you don't want to return anything (`NULL`).
+
+## Use case
+
+For example, with this function, I was able to convert a [CSV file of 9 GB](https://www.data.gouv.fr/fr/datasets/base-sirene-des-entreprises-et-de-leurs-etablissements-siren-siret/) in 40 minutes using less than 2 GB of memory.
+
+```{r}
+con <- csv2sqlite(csv, every_nlines = 1e6, table_name = "sirene",
+                  encoding = "Latin-1")
+```
+

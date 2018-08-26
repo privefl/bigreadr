@@ -103,7 +103,7 @@ cbind_df <- function(list_df) {
 #' @param .combine Function to combine results (list of data frames).
 #' @param skip Number of lines to skip at the beginning of `file`.
 #' @param ... Other arguments to be passed to [data.table::fread],
-#'   excepted `input`, `file`, `skip` and `col.names`.
+#'   excepted `input`, `file`, `skip`, `col.names` and `showProgress`.
 #' @param print_timings Whether to print timings? Default is `TRUE`.
 #'
 #' @inherit fread2 return
@@ -139,7 +139,8 @@ big_fread1 <- function(file, every_nlines,
 
   ## Read + transform other parts
   other_parts <- lapply(file_parts[-1], function(file_part) {
-    .transform(fread2(file_part, skip = 0, col.names = names_df, ...))
+    .transform(fread2(file_part, skip = 0, col.names = names_df,
+                      ..., showProgress = FALSE))
   })
 
   print_proc("Reading + transforming other parts")

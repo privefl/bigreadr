@@ -61,7 +61,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigreadr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.4</span>
       </span>
     </div>
 
@@ -75,6 +75,18 @@
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/csv2sqlite.html">Convert a CSV to SQLite by parts</a>
+    </li>
+  </ul>
 </li>
       </ul>
       
@@ -108,8 +120,9 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>big_fread2</span>(<span class='no'>file</span>, <span class='no'>nb_parts</span>, <span class='kw'>.transform</span> <span class='kw'>=</span> <span class='no'>identity</span>, <span class='kw'>.combine</span> <span class='kw'>=</span> <span class='no'>cbind_df</span>,
-  <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>big_fread2</span>(<span class='no'>file</span>, <span class='kw'>nb_parts</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>.transform</span> <span class='kw'>=</span> <span class='no'>identity</span>,
+  <span class='kw'>.combine</span> <span class='kw'>=</span> <span class='no'>cbind_df</span>, <span class='kw'>skip</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>select</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>part_size</span> <span class='kw'>=</span> <span class='fl'>500</span> * <span class='fl'>1024</span>^<span class='fl'>2</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -121,7 +134,8 @@
     <tr>
       <th>nb_parts</th>
       <td><p>Number of parts in which to split reading (and transforming).
-Parts are referring to blocks of selected columns.</p></td>
+Parts are referring to blocks of selected columns.
+Default uses <code>part_size</code> to set a good value.</p></td>
     </tr>
     <tr>
       <th>.transform</th>
@@ -141,15 +155,24 @@ block of selected columns. Default doesn't change anything.</p></td>
       <td><p>Indices of columns to keep (sorted). Default keeps them all.</p></td>
     </tr>
     <tr>
+      <th>progress</th>
+      <td><p>Show progress? Default is <code>FALSE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>part_size</th>
+      <td><p>Size of the parts if <code>nb_parts</code> is not supplied.
+Default is <code>500 * 1024^2</code> (500 MB).</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>Other arguments to be passed to <a href='http://www.rdocumentation.org/packages/data.table/topics/fread'>data.table::fread</a>,
-excepted <code>input</code>, <code>file</code>, <code>skip</code> and <code>select</code>.</p></td>
+excepted <code>input</code>, <code>file</code>, <code>skip</code>, <code>select</code> and <code>showProgress</code>.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>data.frame</code> by default; a <code>data.table</code> when <code>data.table = TRUE</code>.</p>
+    <p>The outputs of <code>fread2</code> + <code>.transform</code>, combined with <code>.combine</code>.</p>
     
 
   </div>

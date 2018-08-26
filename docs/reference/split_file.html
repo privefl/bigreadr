@@ -62,7 +62,7 @@ Get files from splitting." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">bigreadr</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.1.4</span>
       </span>
     </div>
 
@@ -76,6 +76,18 @@ Get files from splitting." />
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/csv2sqlite.html">Convert a CSV to SQLite by parts</a>
+    </li>
+  </ul>
 </li>
       </ul>
       
@@ -149,15 +161,15 @@ Get files from splitting." />
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>tmp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fwrite2.html'>fwrite2</a></span>(<span class='no'>iris</span>, <span class='fu'>tempfile</span>())
+    <pre class="examples"><div class='input'><span class='no'>tmp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='fwrite2.html'>fwrite2</a></span>(<span class='no'>iris</span>)
 <span class='no'>infos</span> <span class='kw'>&lt;-</span> <span class='fu'>split_file</span>(<span class='no'>tmp</span>, <span class='fl'>100</span>)
 <span class='fu'>str</span>(<span class='no'>infos</span>)</div><div class='output co'>#&gt; List of 5
-#&gt;  $ name_in    : chr "/tmp/RtmppFI5JP/file65a83028493f"
-#&gt;  $ prefix_out : chr "/tmp/RtmppFI5JP/file65a830e93256"
+#&gt;  $ name_in    : chr "/tmp/RtmpnAPL83/file89527be2f72"
+#&gt;  $ prefix_out : chr "/tmp/RtmpnAPL83/file8952788fe4f"
 #&gt;  $ nfiles     : int 2
 #&gt;  $ nlines_part: int 100
-#&gt;  $ nlines_all : int 151</div><div class='input'><span class='fu'>get_split_files</span>(<span class='no'>infos</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmppFI5JP/file65a830e93256_1.txt"
-#&gt; [2] "/tmp/RtmppFI5JP/file65a830e93256_2.txt"</div></pre>
+#&gt;  $ nlines_all : int 151</div><div class='input'><span class='fu'>get_split_files</span>(<span class='no'>infos</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpnAPL83/file8952788fe4f_1.txt"
+#&gt; [2] "/tmp/RtmpnAPL83/file8952788fe4f_2.txt"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
