@@ -47,7 +47,7 @@ csv2sqlite <- function(csv,
 }
 ```
 
-Function `bigreadr::big_fread1()` first splits the CSV files in smaller CSV files, then it reads these CSV files as data frames and transform them, and finally combine the results.
+Function `bigreadr::big_fread1()` first splits the CSV in smaller CSV files, then it reads these CSV files as data frames and transform them, and finally combine the results.
 
 Here, the transformation is just appending the data frame to the SQLite database (and creating this DB the first time). Moreover, you don't want to return anything (`NULL`).
 
