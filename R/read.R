@@ -145,7 +145,11 @@ big_fread1 <- function(file, every_nlines,
   print_proc("Reading + transforming other parts")
 
   ## Combine
-  res <- .combine(c(list(part1), other_parts))
+  all_parts <- unname(c(list(part1), other_parts))
+  res <- tryCatch(.combine(all_parts), error = function(e) {
+    warning2("Combining failed. Returning list of parts instead..")
+    all_parts
+  })
 
   print_proc("Combining")
 
@@ -221,9 +225,13 @@ big_fread2 <- function(file, nb_parts = NULL,
     if (progress) utils::setTxtProgressBar(pb, already_read)
     part
   })
+  all_parts <- unname(all_parts)
 
   ## Combine
-  .combine(unname(all_parts))
+  tryCatch(.combine(all_parts), error = function(e) {
+    warning2("Combining failed. Returning list of parts instead..")
+    all_parts
+  })
 }
 
 ################################################################################

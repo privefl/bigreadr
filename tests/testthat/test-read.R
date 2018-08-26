@@ -21,6 +21,13 @@ test_that("'big_fread1' works", {
   iris1 <- big_fread1(file = csv, 50, print_timings = FALSE)
   expect_identical(iris1, iris)
 
+  expect_warning(
+    iris1 <- big_fread1(file = csv, 50, print_timings = FALSE,
+                        .combine = function() stop("ERROR")),
+    "Combining failed.")
+  expect_length(iris1, 4)
+  expect_identical(rbind_df(iris1), iris)
+
   iris2 <- big_fread1(file = csv, 250, print_timings = FALSE)
   expect_identical(iris2, iris)
 
@@ -41,8 +48,16 @@ test_that("'big_fread1' works", {
 test_that("'big_fread2' works", {
 
   for (nb_parts in 1:7) {
+
     iris1 <- big_fread2(file = csv, nb_parts)
     expect_identical(iris1, iris)
+
+    expect_warning(
+      iris1 <- big_fread2(file = csv, nb_parts,
+                          .combine = function() stop("ERROR")),
+      "Combining failed.")
+    expect_length(iris1, min(nb_parts, ncol(iris)))
+    expect_identical(cbind_df(iris1), iris)
 
     ind2 <- 1
     iris2 <- big_fread2(file = csv, nb_parts, select = ind2, skip = 0)
