@@ -9,9 +9,19 @@ csv <- fwrite2(iris, tempfile(fileext = ".csv"))
 
 test_that("'fread2' changes default", {
   no_dt <- fread2(csv)
+  expect_equal(no_dt, iris)
   expect_s3_class(no_dt, "data.frame")
   expect_failure(expect_s3_class(no_dt, "data.table"))
   expect_s3_class(fread2(csv, data.table = TRUE), "data.table")
+})
+
+test_that("'fread2' works with multiple files", {
+  csv2 <- rep(csv, 3)
+  no_dt <- fread2(csv2)
+  expect_equal(no_dt, rbind(iris, iris, iris))
+  expect_s3_class(no_dt, "data.frame")
+  expect_failure(expect_s3_class(no_dt, "data.table"))
+  expect_s3_class(fread2(csv2, data.table = TRUE), "data.table")
 })
 
 ################################################################################
