@@ -22,6 +22,9 @@ test_that("'fread2' works with multiple files", {
   expect_s3_class(no_dt, "data.frame")
   expect_failure(expect_s3_class(no_dt, "data.table"))
   expect_s3_class(fread2(csv2, data.table = TRUE), "data.table")
+
+  expect_equal(dim(fread2(csv2, nrows = 5)), c(15, 5))
+  expect_equal(dim(fread2(csv2, select = "Species")), c(450, 1))
 })
 
 ################################################################################
