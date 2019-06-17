@@ -8,7 +8,8 @@ fread2(file, ..., data.table = FALSE,
   nThread = getOption("bigreadr.nThread"))
 }
 \arguments{
-\item{file}{Path to the file that you want to read from.}
+\item{file}{Path to the file that you want to read from. If multiple files
+are given, resulting data frames are appended.}
 
 \item{...}{Other arguments to be passed to \link[data.table:fread]{data.table::fread}.}
 
