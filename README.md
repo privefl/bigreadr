@@ -50,3 +50,5 @@ Please send me your use cases!
 - [Read a text file as a Filebacked Big Matrix](https://privefl.github.io/bigstatsr/reference/big_read.html)
 
 - [Read a text file as a Filebacked Data Frame](https://privefl.github.io/bigdfr/reference/FDF_read.html)
+
+- Read multiple files at once using `bigreadr::fread2()`.
