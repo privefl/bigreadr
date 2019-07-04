@@ -2,14 +2,15 @@
 % Please edit documentation in R/read.R
 \name{fread2}
 \alias{fread2}
-\title{Read a text file}
+\title{Read text file(s)}
 \usage{
 fread2(file, ..., data.table = FALSE,
   nThread = getOption("bigreadr.nThread"))
 }
 \arguments{
-\item{file}{Path to the file that you want to read from. If multiple files
-are given, resulting data frames are appended.}
+\item{file}{Path to the file(s) that you want to read from.
+If multiple files are provided, resulting data frames are appended.
+You can ignore this for using e.g. \code{cmd} instead.}
 
 \item{...}{Other arguments to be passed to \link[data.table:fread]{data.table::fread}.}
 
@@ -22,7 +23,7 @@ Default is \code{FALSE} (and is the opposite of \link[data.table:fread]{data.tab
 A \code{data.frame} by default; a \code{data.table} when \code{data.table = TRUE}.
 }
 \description{
-Read a text file
+Read text file(s)
 }
 \examples{
 tmp <- fwrite2(iris)

@@ -27,6 +27,15 @@ test_that("'fread2' works with multiple files", {
   expect_equal(dim(fread2(csv2, select = "Species")), c(450, 1))
 })
 
+test_that("'fread2' can use different types of input", {
+  tmp <- bigreadr::fwrite2(datasets::iris)
+  cmd <- sprintf("grep -v setosa %s", tmp)
+  expect_identical(
+    bigreadr::fread2(cmd = cmd),
+    data.table::fread(cmd = cmd, data.table = FALSE)
+  )
+})
+
 ################################################################################
 
 test_that("'big_fread1' works", {

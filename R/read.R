@@ -1,9 +1,10 @@
 ################################################################################
 
-#' Read a text file
+#' Read text file(s)
 #'
-#' @param file Path to the file that you want to read from. If multiple files
-#'   are given, resulting data frames are appended.
+#' @param file Path to the file(s) that you want to read from.
+#'   If multiple files are provided, resulting data frames are appended.
+#'   You can ignore this for using e.g. `cmd` instead.
 #' @param ... Other arguments to be passed to [data.table::fread].
 #' @param data.table Whether to return a `data.table` or just a `data.frame`?
 #'   Default is `FALSE` (and is the opposite of [data.table::fread]).
@@ -20,12 +21,16 @@ fread2 <- function(file, ...,
                    data.table = FALSE,
                    nThread = getOption("bigreadr.nThread")) {
 
-  if (length(file) > 1) {
+  if (missing(file)) {
+    data.table::fread(..., data.table = data.table, nThread = nThread)
+  } else if (length(file) > 1) {
     rbind_df(lapply(file, fread2, ..., data.table = data.table, nThread = nThread))
   } else {
     data.table::fread(file = file, ..., data.table = data.table, nThread = nThread)
   }
 }
+
+################################################################################
 
 #' Write a data frame to a text file
 #'
