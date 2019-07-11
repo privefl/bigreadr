@@ -2,9 +2,9 @@
 
 #' Read text file(s)
 #'
-#' @param file Path to the file(s) that you want to read from.
-#'   If multiple files are provided, resulting data frames are appended.
-#'   You can ignore this for using e.g. `cmd` instead.
+#' @param input Path to the file(s) that you want to read from.
+#'   This can also be a command, some text or an URL.
+#'   If a vector of inputs is provided, resulting data frames are appended.
 #' @param ... Other arguments to be passed to [data.table::fread].
 #' @param data.table Whether to return a `data.table` or just a `data.frame`?
 #'   Default is `FALSE` (and is the opposite of [data.table::fread]).
@@ -17,16 +17,16 @@
 #' tmp <- fwrite2(iris)
 #' iris2 <- fread2(tmp)
 #' all.equal(iris2, iris)  ## fread doesn't use factors
-fread2 <- function(file, ...,
+fread2 <- function(input, ...,
                    data.table = FALSE,
                    nThread = getOption("bigreadr.nThread")) {
 
-  if (missing(file)) {
+  if (missing(input)) {
     data.table::fread(..., data.table = data.table, nThread = nThread)
-  } else if (length(file) > 1) {
-    rbind_df(lapply(file, fread2, ..., data.table = data.table, nThread = nThread))
+  } else if (length(input) > 1) {
+    rbind_df(lapply(input, fread2, ..., data.table = data.table, nThread = nThread))
   } else {
-    data.table::fread(file = file, ..., data.table = data.table, nThread = nThread)
+    data.table::fread(input, ..., data.table = data.table, nThread = nThread)
   }
 }
 

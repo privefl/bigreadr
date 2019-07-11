@@ -28,12 +28,15 @@ test_that("'fread2' works with multiple files", {
 })
 
 test_that("'fread2' can use different types of input", {
-  tmp <- bigreadr::fwrite2(datasets::iris)
-  cmd <- sprintf("grep -v setosa %s", tmp)
-  expect_identical(
-    bigreadr::fread2(cmd = cmd),
-    data.table::fread(cmd = cmd, data.table = FALSE)
-  )
+
+  cmd <- sprintf("grep -v setosa %s", fwrite2(datasets::iris))
+  expect_identical(fread2(cmd), data.table::fread(cmd, data.table = FALSE))
+
+  url <- "https://raw.githubusercontent.com/privefl/bigsnpr/master/inst/extdata/example.fam"
+  expect_identical(fread2(url), data.table::fread(url, data.table = FALSE))
+
+  text <- paste(readLines(url), collapse = "\n")
+  expect_identical(fread2(text), data.table::fread(url, data.table = FALSE))
 })
 
 ################################################################################

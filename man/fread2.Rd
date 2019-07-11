@@ -4,13 +4,13 @@
 \alias{fread2}
 \title{Read text file(s)}
 \usage{
-fread2(file, ..., data.table = FALSE,
+fread2(input, ..., data.table = FALSE,
   nThread = getOption("bigreadr.nThread"))
 }
 \arguments{
-\item{file}{Path to the file(s) that you want to read from.
-If multiple files are provided, resulting data frames are appended.
-You can ignore this for using e.g. \code{cmd} instead.}
+\item{input}{Path to the file(s) that you want to read from.
+This can also be a command, some text or an URL.
+If a vector of inputs is provided, resulting data frames are appended.}
 
 \item{...}{Other arguments to be passed to \link[data.table:fread]{data.table::fread}.}
 
