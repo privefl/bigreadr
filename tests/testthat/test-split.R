@@ -27,4 +27,24 @@ test_that("'split_file' works", {
   }
 })
 
+test_that("'split_file' with repeated header works", {
+  tf <- tempfile()
+  write.csv(cars, tf, row.names = FALSE)
+  sf <- split_file(tf, 10, repeat_header = TRUE)
+  gsf = get_split_files(sf)
+
+  loaded_df <- Reduce(rbind, lapply(gsf, function(.x) {
+    read.csv(.x)
+  }))
+
+  expect_setequal(names(loaded_df), c("speed", "dist"))
+
+  expect_equal(nrow(loaded_df), 50)
+
+  # clean up
+  unlink(tf)
+  unlink(gsf)
+})
+
 ################################################################################
+

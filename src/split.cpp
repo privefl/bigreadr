@@ -10,7 +10,8 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 List split_every_nlines(std::string name_in,
                         std::string prefix_out,
-                        int every_nlines) {
+                        int every_nlines,
+                        bool repeat_header) {
 
   FILE *fp_in = fopen(name_in.c_str(), "rb"), *fp_out;
   setvbuf(fp_in, NULL, _IOLBF, BUFLEN);
@@ -24,9 +25,13 @@ List split_every_nlines(std::string name_in,
 
   char *line = new char[size];
 
+  //for repeating the header
+  char *head = new char[size];
+
   bool not_eol, not_eof = true;
   int i, k = 0, c = 0;
 
+  bool copied_header = false;
 
   while (not_eof) {
 
@@ -46,6 +51,17 @@ List split_every_nlines(std::string name_in,
 
       line_size = strlen(line);
 
+      if(repeat_header) {
+        if (!copied_header) {
+          strcpy(head, line);
+        }
+
+        if((i == 0) & copied_header) {
+          fputs(head, fp_out);
+        }
+
+        copied_header = true;
+      }
       fputs(line, fp_out);
 
       if (line_size > last) {
@@ -83,6 +99,7 @@ List split_every_nlines(std::string name_in,
 
   delete[] name_out;
   delete[] line;
+  delete[] head;
 
   return List::create(
     _["name_in"]     = name_in,
