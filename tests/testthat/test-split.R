@@ -4,7 +4,7 @@ context("test-split.R")
 
 ################################################################################
 
-test_that("'split_file' works", {
+test_that("'split_file()' works", {
   SEQ <- seq_len(nrow(iris))
   strings <- c("", "", " ", sapply(10^(seq(0, 4, by = 0.2)), function(i) {
     paste(as.matrix(iris)[sample(SEQ, i, TRUE), ], collapse = " ")
@@ -27,24 +27,25 @@ test_that("'split_file' works", {
   }
 })
 
-test_that("'split_file' with repeated header works", {
-  tf <- tempfile()
-  write.csv(cars, tf, row.names = FALSE)
-  sf <- split_file(tf, 10, repeat_header = TRUE)
-  gsf = get_split_files(sf)
+################################################################################
 
-  loaded_df <- Reduce(rbind, lapply(gsf, function(.x) {
-    read.csv(.x)
-  }))
+test_that("'split_file()' works with a repeated header", {
 
-  expect_setequal(names(loaded_df), c("speed", "dist"))
+  tf <- fwrite2(cars, tempfile())
+  sf1 <- split_file(tf, 10)
+  gsf1 <- get_split_files(sf1)
+  expect_equal(sum(sapply(gsf1, nlines)), 51)
+  expect_error(Reduce(rbind, lapply(gsf1, fread2)),
+               "names do not match previous names")
 
+  sf2 <- split_file(tf, 10, repeat_header = TRUE)
+  gsf2 <- get_split_files(sf2)
+  expect_equal(sapply(gsf2, readLines, n = 1), rep(readLines(tf, n = 1), 6),
+               check.attributes = FALSE)
+
+  loaded_df <- Reduce(rbind, lapply(gsf2, read.csv))
+  expect_equal(names(loaded_df), c("speed", "dist"))
   expect_equal(nrow(loaded_df), 50)
-
-  # clean up
-  unlink(tf)
-  unlink(gsf)
 })
 
 ################################################################################
-

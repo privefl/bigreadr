@@ -25,7 +25,7 @@ List split_every_nlines(std::string name_in,
 
   char *line = new char[size];
 
-  //for repeating the header
+  // when repeating the header
   char *head = new char[size];
 
   bool not_eol, not_eof = true;
@@ -49,21 +49,20 @@ List split_every_nlines(std::string name_in,
         break;
       }
 
-      line_size = strlen(line);
+      if (repeat_header) {
 
-      if(repeat_header) {
+        if ((i == 0) & copied_header)
+          fputs(head, fp_out);
+
         if (!copied_header) {
           strcpy(head, line);
+          copied_header = true;
         }
-
-        if((i == 0) & copied_header) {
-          fputs(head, fp_out);
-        }
-
-        copied_header = true;
       }
+
       fputs(line, fp_out);
 
+      line_size = strlen(line);
       if (line_size > last) {
 
         not_eol = (line[last] != '\n');
