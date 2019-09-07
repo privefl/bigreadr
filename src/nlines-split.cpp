@@ -80,7 +80,7 @@ List split_every_nlines(std::string name_in,
                         int every_nlines,
                         bool repeat_header) {
 
-  FILE *fp_in = fopen(name_in.c_str(), "rb"), *fp_out;
+  FILE *fp_in = fopen(name_in.c_str(), "r"), *fp_out;
 
   const char *fn_out = prefix_out.c_str();
   char *name_out = new char[strlen(fn_out) + 20];
@@ -97,7 +97,8 @@ List split_every_nlines(std::string name_in,
   rewind(fp_in);
 
   bool not_eof = true, header_added = false;
-  size_t nfile = 0, nline_all = 0;
+  int nfile = 0;
+  size_t nline_all = 0;
 
   while (not_eof) {
 
