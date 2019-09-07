@@ -5,6 +5,8 @@
 #' @param file Path to file that you want to split.
 #' @param every_nlines Maximum number of lines in new file parts.
 #' @param prefix_out Prefix for created files. Default uses `tempfile()`.
+#' @param repeat_header Whether to repeat the header row in each file.
+#'   Default is `FALSE`.
 #'
 #' @return A list with
 #'   - `name_in`: input parameter `file`,
@@ -19,11 +21,12 @@
 #' infos <- split_file(tmp, 100)
 #' str(infos)
 #' get_split_files(infos)
-split_file <- function(file, every_nlines, prefix_out = tempfile()) {
+split_file <- function(file, every_nlines, prefix_out = tempfile(), repeat_header = FALSE) {
 
   assert_exist(file)
 
-  split_every_nlines(file, prefix_out = prefix_out, every_nlines = every_nlines)
+  split_every_nlines(file, prefix_out = prefix_out, every_nlines = every_nlines,
+                     repeat_header = repeat_header)
 }
 
 ################################################################################

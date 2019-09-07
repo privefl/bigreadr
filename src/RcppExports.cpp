@@ -17,22 +17,23 @@ BEGIN_RCPP
 END_RCPP
 }
 // split_every_nlines
-List split_every_nlines(std::string name_in, std::string prefix_out, int every_nlines);
-RcppExport SEXP _bigreadr_split_every_nlines(SEXP name_inSEXP, SEXP prefix_outSEXP, SEXP every_nlinesSEXP) {
+List split_every_nlines(std::string name_in, std::string prefix_out, int every_nlines, bool repeat_header);
+RcppExport SEXP _bigreadr_split_every_nlines(SEXP name_inSEXP, SEXP prefix_outSEXP, SEXP every_nlinesSEXP, SEXP repeat_headerSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::string >::type name_in(name_inSEXP);
     Rcpp::traits::input_parameter< std::string >::type prefix_out(prefix_outSEXP);
     Rcpp::traits::input_parameter< int >::type every_nlines(every_nlinesSEXP);
-    rcpp_result_gen = Rcpp::wrap(split_every_nlines(name_in, prefix_out, every_nlines));
+    Rcpp::traits::input_parameter< bool >::type repeat_header(repeat_headerSEXP);
+    rcpp_result_gen = Rcpp::wrap(split_every_nlines(name_in, prefix_out, every_nlines, repeat_header));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
     {"_bigreadr_nlines", (DL_FUNC) &_bigreadr_nlines, 1},
-    {"_bigreadr_split_every_nlines", (DL_FUNC) &_bigreadr_split_every_nlines, 3},
+    {"_bigreadr_split_every_nlines", (DL_FUNC) &_bigreadr_split_every_nlines, 4},
     {NULL, NULL, 0}
 };
 

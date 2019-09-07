@@ -13,11 +13,12 @@
 #' @examples
 #' tmp <- fwrite2(iris)
 #' nlines(tmp)
+#'
 nlines <- function(file) {
     .Call(`_bigreadr_nlines`, file)
 }
 
-split_every_nlines <- function(name_in, prefix_out, every_nlines) {
-    .Call(`_bigreadr_split_every_nlines`, name_in, prefix_out, every_nlines)
+split_every_nlines <- function(name_in, prefix_out, every_nlines, repeat_header) {
+    .Call(`_bigreadr_split_every_nlines`, name_in, prefix_out, every_nlines, repeat_header)
 }
 

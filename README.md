@@ -11,7 +11,7 @@ Read large text files based on splitting + `data.table::fread`
 ## Example
 
 ```{r}
-# devtools::install_github("privefl/bigreadr")
+# remotes::install_github("privefl/bigreadr")
 library(bigreadr)
 
 # Create a temporary file of ~141 MB (just as an example)

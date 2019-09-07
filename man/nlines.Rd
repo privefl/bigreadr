@@ -18,4 +18,5 @@ Get the number of lines of a file.
 \examples{
 tmp <- fwrite2(iris)
 nlines(tmp)
+
 }

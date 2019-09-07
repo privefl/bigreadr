@@ -5,7 +5,8 @@
 \alias{get_split_files}
 \title{Split file every nlines}
 \usage{
-split_file(file, every_nlines, prefix_out = tempfile())
+split_file(file, every_nlines, prefix_out = tempfile(),
+  repeat_header = FALSE)
 
 get_split_files(split_file_out)
 }
@@ -15,6 +16,9 @@ get_split_files(split_file_out)
 \item{every_nlines}{Maximum number of lines in new file parts.}
 
 \item{prefix_out}{Prefix for created files. Default uses \code{tempfile()}.}
+
+\item{repeat_header}{Whether to repeat the header row in each file.
+Default is \code{FALSE}.}
 
 \item{split_file_out}{Output of \link{split_file}.}
 }
