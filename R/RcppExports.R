@@ -13,6 +13,7 @@
 #' @examples
 #' tmp <- fwrite2(iris)
 #' nlines(tmp)
+#'
 nlines <- function(file) {
     .Call(`_bigreadr_nlines`, file)
 }
