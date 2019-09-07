@@ -3,8 +3,6 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-#define BUFLEN (64 * 1024)
-
 /******************************************************************************/
 
 char * fgets_full_line(char * str, FILE * stream,
@@ -83,7 +81,6 @@ List split_every_nlines(std::string name_in,
                         bool repeat_header) {
 
   FILE *fp_in = fopen(name_in.c_str(), "rb"), *fp_out;
-  setvbuf(fp_in, NULL, _IOLBF, BUFLEN);
 
   const char *fn_out = prefix_out.c_str();
   char *name_out = new char[strlen(fn_out) + 20];
@@ -106,8 +103,7 @@ List split_every_nlines(std::string name_in,
 
     // Open file number 'k'
     sprintf(name_out, "%s_%d.txt", fn_out, ++k);
-    fp_out = fopen(name_out, "wb");
-    setvbuf(fp_out, NULL, _IOFBF, BUFLEN);
+    fp_out = fopen(name_out, "w");
 
     // Fill it with 'every_nlines' lines
     int i = 0;
@@ -131,7 +127,7 @@ List split_every_nlines(std::string name_in,
     fflush(fp_out);
     fclose(fp_out);
     if (i == 0) {
-      // nothing has been written because of EOF -> rm file
+      // nothing has been written because of EOF -> remove file
       remove(name_out);
       k--;
     } else {
