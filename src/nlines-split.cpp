@@ -60,16 +60,16 @@ double nlines(std::string file) {
   size_t last = size - 2;
 
   char *line = new char[size];
-  size_t c = 0;
+  size_t nline_all = 0;
 
   while ( (line = fgets_full_line(line, fp_in, &size, &last)) != NULL ) {
-    c++;
+    nline_all++;
   }
 
   fclose(fp_in);
   delete [] line;
 
-  return c;
+  return nline_all;
 }
 
 /******************************************************************************/
@@ -97,41 +97,41 @@ List split_every_nlines(std::string name_in,
   rewind(fp_in);
 
   bool not_eof = true, header_added = false;
-  int k = 0, c = 0;
+  size_t nfile = 0, nline_all = 0;
 
   while (not_eof) {
 
-    // Open file number 'k'
-    sprintf(name_out, "%s_%d.txt", fn_out, ++k);
+    // Open file number 'nfile'
+    sprintf(name_out, "%s_%d.txt", fn_out, ++nfile);
     fp_out = fopen(name_out, "w");
 
     // Fill it with 'every_nlines' lines
-    int i = 0;
-    while (i < every_nlines) {
+    int nline_file = 0;
+    while (nline_file < every_nlines) {
 
       if ( (line = fgets_full_line(line, fp_in, &size, &last)) == NULL ) {
         not_eof = false;
         break;
       }
 
-      if (repeat_header & (i == 0) & (k > 1)) {
+      if (repeat_header & (nline_file == 0) & (nfile > 1)) {
         fputs(head, fp_out);
         header_added = true;
       };
 
       fputs(line, fp_out);
-      i++;
+      nline_file++;
     }
 
-    // Close file number 'k'
+    // Close file number 'nfile'
     fflush(fp_out);
     fclose(fp_out);
-    if (i == 0) {
+    if (nline_file == 0) {
       // nothing has been written because of EOF -> remove file
       remove(name_out);
-      k--;
+      nfile--;
     } else {
-      c += i + header_added;
+      nline_all += nline_file + header_added;
     }
   }
 
@@ -144,9 +144,9 @@ List split_every_nlines(std::string name_in,
   return List::create(
     _["name_in"]       = name_in,
     _["prefix_out"]    = prefix_out,
-    _["nfiles"]        = k,
+    _["nfiles"]        = nfile,
     _["nlines_part"]   = every_nlines,
-    _["nlines_all"]    = c,
+    _["nlines_all"]    = nline_all,
     _["repeat_header"] = repeat_header
   );
 }
