@@ -6,9 +6,8 @@ context("test-split.R")
 
 test_that("'split_file()' works", {
 
-  SEQ <- seq_len(nrow(iris))
   strings <- c("", "", " ", sapply(10^(seq(0, 4, by = 0.2)), function(i) {
-    paste(as.matrix(iris)[sample(SEQ, i, TRUE), ], collapse = " ")
+    paste(as.matrix(iris)[sample(nrow(iris), i, TRUE), ], collapse = " ")
   }))
   for (every in c(1, 2, 4, 12, 24, 25)) {
     writeLines(sample(strings, replace = TRUE), tmp <- tempfile())
@@ -62,9 +61,8 @@ test_that("'split_file()' works with a repeated header", {
 
 test_that("'split_file()' works with a repeated header (special cases)", {
 
-  SEQ <- seq_len(nrow(iris))
   strings <- c("", "", " ", sapply(10^(seq(0, 4, by = 0.2)), function(i) {
-    paste(as.matrix(iris)[sample(SEQ, i, TRUE), ], collapse = " ")
+    paste(as.matrix(iris)[sample(nrow(iris), i, TRUE), ], collapse = " ")
   }))
   for (every in c(1, 2, 4, 12, 24, 25)) {
     writeLines(sample(strings, replace = TRUE), tmp <- tempfile())
