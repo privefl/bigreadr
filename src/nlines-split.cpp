@@ -88,19 +88,19 @@ List split_every_nlines(std::string name_in,
   const char *fn_out = prefix_out.c_str();
   char *name_out = new char[strlen(fn_out) + 20];
 
-  size_t line_size;
   size_t size = 100;
   size_t last = size - 2;
 
   char *line = new char[size];
 
-  // when repeating the header
+  // read header once and store it
+  line = fgets_full_line(line, fp_in, &size, &last);
   char *head = new char[size];
+  strcpy(head, line);
+  rewind(fp_in);
 
-  bool not_eol, not_eof = true;
-  int i, k = 0, c = 0;
-
-  bool copied_header = false;
+  bool not_eof = true, header_added = false;
+  int k = 0, c = 0;
 
   while (not_eof) {
 
@@ -110,47 +110,22 @@ List split_every_nlines(std::string name_in,
     setvbuf(fp_out, NULL, _IOFBF, BUFLEN);
 
     // Fill it with 'every_nlines' lines
-    i = 0;
+    int i = 0;
     while (i < every_nlines) {
 
-      if (fgets(line, size, fp_in) == NULL) {
+      if ( (line = fgets_full_line(line, fp_in, &size, &last)) == NULL ) {
         not_eof = false;
         break;
       }
 
-      if (repeat_header) {
-
-        if ((i == 0) & copied_header)
-          fputs(head, fp_out);
-
-        if (!copied_header) {
-          strcpy(head, line);
-          copied_header = true;
-        }
-      }
+      if (repeat_header & (i == 0) & (k > 1)) {
+        fputs(head, fp_out);
+        header_added = true;
+      };
 
       fputs(line, fp_out);
-
-      line_size = strlen(line);
-      if (line_size > last) {
-
-        not_eol = (line[last] != '\n');
-
-        fflush(fp_out);
-        size *= 2;
-        delete[] line;
-        line = new char[size];
-        last = size - 2;
-
-        if (not_eol) continue;
-      }
-
-      // End of line
       i++;
-
     }
-
-    c += i;
 
     // Close file number 'k'
     fflush(fp_out);
@@ -159,8 +134,9 @@ List split_every_nlines(std::string name_in,
       // nothing has been written because of EOF -> rm file
       remove(name_out);
       k--;
+    } else {
+      c += i + header_added;
     }
-
   }
 
   fclose(fp_in);
@@ -170,11 +146,12 @@ List split_every_nlines(std::string name_in,
   delete[] head;
 
   return List::create(
-    _["name_in"]     = name_in,
-    _["prefix_out"]  = prefix_out,
-    _["nfiles"]      = k,
-    _["nlines_part"] = every_nlines,
-    _["nlines_all"]  = c
+    _["name_in"]       = name_in,
+    _["prefix_out"]    = prefix_out,
+    _["nfiles"]        = k,
+    _["nlines_part"]   = every_nlines,
+    _["nlines_all"]    = c,
+    _["repeat_header"] = repeat_header
   );
 }
 

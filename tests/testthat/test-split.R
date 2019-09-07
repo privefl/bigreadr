@@ -16,6 +16,7 @@ test_that("'split_file()' works", {
     infos <- split_file(tmp, every, tmp2 <- tempfile())
     expect_identical(infos[["name_in"]], tmp)
     expect_identical(infos[["prefix_out"]], tmp2)
+    expect_identical(infos[["repeat_header"]], FALSE)
     expect_equal(ceiling(infos[["nlines_all"]] / infos[["nlines_part"]]),
                  infos[["nfiles"]])
     expect_identical(infos[["nlines_all"]], 24L)
@@ -71,8 +72,9 @@ test_that("'split_file()' works with a repeated header (special cases)", {
     infos <- split_file(tmp, every, tmp2 <- tempfile(), repeat_header = TRUE)
     expect_identical(infos[["name_in"]], tmp)
     expect_identical(infos[["prefix_out"]], tmp2)
+    expect_identical(infos[["repeat_header"]], TRUE)
     nlines_all_without_header <- infos[["nlines_all"]] - infos[["nfiles"]]
-    expect_identical(nlines_all_without_header + 1, 24L)
+    expect_identical(nlines_all_without_header + 1L, 24L)
     expect_equal(ceiling((nlines_all_without_header + 1) / infos[["nlines_part"]]),
                  infos[["nfiles"]])
     # New files all exist
