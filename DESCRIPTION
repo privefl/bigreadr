@@ -1,6 +1,6 @@
 Package: bigreadr
-Version: 0.1.9
-Date: 2019-09-07
+Version: 0.1.10
+Date: 2019-09-17
 Title: Read Large Text Files
 Description: Read large text files by splitting them in smaller files.
     Package bigreadr also provides some convenient wrappers of fread/fwrite. 
