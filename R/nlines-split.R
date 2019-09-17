@@ -1,5 +1,24 @@
 ################################################################################
 
+#' Number of lines
+#'
+#' Get the number of lines of a file.
+#'
+#' @param file Path of the file.
+#'
+#' @return The number of lines as one integer.
+#' @export
+#'
+#' @examples
+#' tmp <- fwrite2(iris)
+#' nlines(tmp)
+#'
+nlines <- function(file) {
+  nlines_cpp( normalizePath(file, mustWork = TRUE) )
+}
+
+################################################################################
+
 #' Split file every nlines
 #'
 #' @param file Path to file that you want to split.
@@ -21,12 +40,16 @@
 #' infos <- split_file(tmp, 100)
 #' str(infos)
 #' get_split_files(infos)
-split_file <- function(file, every_nlines, prefix_out = tempfile(), repeat_header = FALSE) {
+split_file <- function(file, every_nlines,
+                       prefix_out = tempfile(),
+                       repeat_header = FALSE) {
 
-  assert_exist(file)
-
-  split_every_nlines(file, prefix_out = prefix_out, every_nlines = every_nlines,
-                     repeat_header = repeat_header)
+  split_every_nlines(
+    name_in       = normalizePath(file, mustWork = TRUE),
+    prefix_out    = path.expand(prefix_out),
+    every_nlines  = every_nlines,
+    repeat_header = repeat_header
+  )
 }
 
 ################################################################################

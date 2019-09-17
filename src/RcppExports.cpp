@@ -5,14 +5,14 @@
 
 using namespace Rcpp;
 
-// nlines
-double nlines(std::string file);
-RcppExport SEXP _bigreadr_nlines(SEXP fileSEXP) {
+// nlines_cpp
+double nlines_cpp(std::string file);
+RcppExport SEXP _bigreadr_nlines_cpp(SEXP fileSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::string >::type file(fileSEXP);
-    rcpp_result_gen = Rcpp::wrap(nlines(file));
+    rcpp_result_gen = Rcpp::wrap(nlines_cpp(file));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -32,7 +32,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_bigreadr_nlines", (DL_FUNC) &_bigreadr_nlines, 1},
+    {"_bigreadr_nlines_cpp", (DL_FUNC) &_bigreadr_nlines_cpp, 1},
     {"_bigreadr_split_every_nlines", (DL_FUNC) &_bigreadr_split_every_nlines, 4},
     {NULL, NULL, 0}
 };

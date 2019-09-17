@@ -37,21 +37,8 @@ char * fgets_full_line(char * str, FILE * stream,
 
 /******************************************************************************/
 
-//' Number of lines
-//'
-//' Get the number of lines of a file.
-//'
-//' @param file Path of the file.
-//'
-//' @return The number of lines as one integer.
-//' @export
-//'
-//' @examples
-//' tmp <- fwrite2(iris)
-//' nlines(tmp)
-//'
 // [[Rcpp::export]]
-double nlines(std::string file) {
+double nlines_cpp(std::string file) {
 
   FILE *fp_in = fopen(file.c_str(), "r");
   if (fp_in == NULL) Rcpp::stop("Error while reading file '%s'.", file);
@@ -81,6 +68,7 @@ List split_every_nlines(std::string name_in,
                         bool repeat_header) {
 
   FILE *fp_in = fopen(name_in.c_str(), "r"), *fp_out;
+  if (fp_in == NULL) Rcpp::stop("Error while reading file '%s'.", name_in);
 
   const char *fn_out = prefix_out.c_str();
   char *name_out = new char[strlen(fn_out) + 20];
