@@ -13,14 +13,14 @@ test_that("'nlines()' works", {
   }))
   replicate(100, {
     writeLines(sample(strings, replace = TRUE), tmp <- tempfile())
-    expect_identical(nlines(tmp), 24)
+    expect_equal(nlines(tmp), length(readLines(tmp)))
   })
 })
 
 ################################################################################
 
 test_that("'nlines()' works with or without newline", {
-  csv1 <- system.file("testdata", "cars_with_newline.csv", package = "bigreadr")
+  csv1 <- system.file("testdata", "cars_with_newline.csv",    package = "bigreadr")
   expect_identical(nlines(csv1), 51)
   csv2 <- system.file("testdata", "cars_without_newline.csv", package = "bigreadr")
   expect_identical(nlines(csv2), 51)

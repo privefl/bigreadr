@@ -1,10 +1,14 @@
 Package: bigreadr
-Version: 0.1.10
-Date: 2019-09-17
+Version: 0.1.11
+Date: 2019-10-16
 Title: Read Large Text Files
 Description: Read large text files by splitting them in smaller files.
-    Package bigreadr also provides some convenient wrappers of fread/fwrite. 
-Authors@R: person("Florian", "Privé", , "florian.prive.21@gmail.com", c("aut", "cre"))
+    Package 'bigreadr' also provides some convenient wrappers of fread/fwrite. 
+Authors@R: 
+    person(given = "Florian",
+           family = "Privé",
+           role = c("aut", "cre"),
+           email = "florian.prive.21@gmail.com")
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -12,6 +16,7 @@ ByteCompile: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.0
 Imports: 
+    bigassertr (>= 0.1.1),
     data.table,
     Rcpp,
     parallel,
