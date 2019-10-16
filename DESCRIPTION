@@ -3,7 +3,8 @@ Version: 0.1.11
 Date: 2019-10-16
 Title: Read Large Text Files
 Description: Read large text files by splitting them in smaller files.
-    Package 'bigreadr' also provides some convenient wrappers of fread/fwrite. 
+    Package 'bigreadr' also provides some convenient wrappers around fread()
+    and fwrite() from package 'data.table'. 
 Authors@R: 
     person(given = "Florian",
            family = "Privé",
