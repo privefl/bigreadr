@@ -3,36 +3,33 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
+#define INIT_SIZE 64
+
 /******************************************************************************/
 
-char * fgets_full_line(char * str, FILE * stream,
-                       size_t * p_size, size_t * p_last) {
+char * fgets_full_line(char * str, FILE * stream, size_t * p_size) {
 
-  bool reached_eol = false;
-
-  while (!reached_eol) {
+  while (true) {
 
     str = fgets(str, *p_size, stream);
     if (str == NULL) return NULL;
+    // Rcout << *p_size << " -> " << (str[strlen(str) - 1] == '\n') << std::endl;
 
-    if (strlen(str) > *p_last) {
+    if (feof(stream) | (str[strlen(str) - 1] == '\n')) { // reached EOF or EOL
 
-      reached_eol = (str[*p_last] == '\n');
+      // Rcout << strlen(str) << " / " << (str[strlen(str) - 1] == '\n') << std::endl;
+      return str;
 
-      // increase size of str
+    } else { // increase size of str and try again
+
       fseek(stream , 1 - *p_size, SEEK_CUR);
       *p_size *= 2;
-      *p_last = *p_size - 2;
 
       delete [] str;
       str = new char[*p_size];
 
-    } else {
-      reached_eol = true;
     }
   }
-
-  return str;
 }
 
 /******************************************************************************/
@@ -41,16 +38,23 @@ char * fgets_full_line(char * str, FILE * stream,
 double nlines_cpp(std::string file) {
 
   FILE *fp_in = fopen(file.c_str(), "r");
-  if (fp_in == NULL) Rcpp::stop("Error while reading file '%s'.", file);
+  if (fp_in == NULL) Rcpp::stop("Error while opening file '%s'.", file);
 
-  size_t size = 100;
-  size_t last = size - 2;
+  size_t size = INIT_SIZE;
 
   char *line = new char[size];
   size_t nline_all = 0;
 
-  while ( (line = fgets_full_line(line, fp_in, &size, &last)) != NULL ) {
-    nline_all++;
+  while (!feof(fp_in)) {
+
+    line = fgets_full_line(line, fp_in, &size);
+
+    if (ferror(fp_in)) {
+      delete [] line;
+      Rcpp::stop("Error while reading file '%s'.", file);
+    }
+
+    if (line != NULL) nline_all++;
   }
 
   fclose(fp_in);
@@ -68,18 +72,17 @@ List split_every_nlines(std::string name_in,
                         bool repeat_header) {
 
   FILE *fp_in = fopen(name_in.c_str(), "r"), *fp_out;
-  if (fp_in == NULL) Rcpp::stop("Error while reading file '%s'.", name_in);
+  if (fp_in == NULL) Rcpp::stop("Error while opening file '%s'.", name_in);
 
   const char *fn_out = prefix_out.c_str();
   char *name_out = new char[strlen(fn_out) + 20];
 
-  size_t size = 100;
-  size_t last = size - 2;
+  size_t size = INIT_SIZE;
 
   char *line = new char[size];
 
   // read header once and store it
-  line = fgets_full_line(line, fp_in, &size, &last);
+  line = fgets_full_line(line, fp_in, &size);
   char *head = new char[size];
   strcpy(head, line);
   rewind(fp_in);
@@ -98,7 +101,7 @@ List split_every_nlines(std::string name_in,
     int nline_file = 0;
     while (nline_file < every_nlines) {
 
-      if ( (line = fgets_full_line(line, fp_in, &size, &last)) == NULL ) {
+      if ( (line = fgets_full_line(line, fp_in, &size)) == NULL ) {
         not_eof = false;
         break;
       }

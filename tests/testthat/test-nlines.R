@@ -8,6 +8,10 @@ test_that("'nlines()' works", {
 
   expect_error(nlines("does_not_exist.txt"))
 
+  strings <- readRDS(system.file("testdata", "wrong_string.rds", package = "bigreadr"))
+  writeLines(strings, tmp <- tempfile())
+  expect_equal(nlines(tmp), 24)
+
   strings <- c("", "", " ", sapply(10^(seq(0, 4, by = 0.2)), function(i) {
     paste(as.matrix(iris)[sample(nrow(iris), i, TRUE), ], collapse = " ")
   }))
