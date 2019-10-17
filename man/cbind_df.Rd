@@ -17,5 +17,7 @@ One merged data frame.
 Merge data frames
 }
 \examples{
-cbind_df(list(iris, iris))
+str(iris)
+str(cbind_df(list(iris, iris)))
+
 }

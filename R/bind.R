@@ -9,7 +9,9 @@
 #' @export
 #'
 #' @examples
-#' rbind_df(list(iris, iris))
+#' str(iris)
+#' str(rbind_df(list(iris, iris)))
+#'
 rbind_df <- function(list_df) {
 
   first_df <- list_df[[1]]
@@ -37,7 +39,9 @@ rbind_df <- function(list_df) {
 #' @export
 #'
 #' @examples
-#' cbind_df(list(iris, iris))
+#' str(iris)
+#' str(cbind_df(list(iris, iris)))
+#'
 cbind_df <- function(list_df) {
 
   res <- do.call(cbind.data.frame, list_df)

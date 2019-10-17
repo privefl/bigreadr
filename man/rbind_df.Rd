@@ -17,5 +17,7 @@ One merged data frame with the names of the first input data frame.
 Merge data frames
 }
 \examples{
-rbind_df(list(iris, iris))
+str(iris)
+str(rbind_df(list(iris, iris)))
+
 }

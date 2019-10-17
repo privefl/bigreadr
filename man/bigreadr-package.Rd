@@ -7,7 +7,8 @@
 \title{bigreadr: Read Large Text Files}
 \description{
 Read large text files by splitting them in smaller files.
-    Package 'bigreadr' also provides some convenient wrappers of fread/fwrite.
+    Package 'bigreadr' also provides some convenient wrappers around fread()
+    and fwrite() from package 'data.table'.
 }
 \seealso{
 Useful links:
