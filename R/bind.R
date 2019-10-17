@@ -43,14 +43,7 @@ rbind_df <- function(list_df) {
 #' str(cbind_df(list(iris, iris)))
 #'
 cbind_df <- function(list_df) {
-
-  res <- do.call(cbind.data.frame, list_df)
-
-  if (data.table::is.data.table(list_df[[1]])) {
-    data.table::as.data.table(res)
-  } else {
-    res
-  }
+  do.call(cbind, list_df)
 }
 
 ################################################################################
