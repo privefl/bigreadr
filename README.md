@@ -47,6 +47,8 @@ Please send me your use cases!
 
 - [Convert a CSV to SQLite by parts](https://privefl.github.io/bigreadr/articles/csv2sqlite.html)
 
+- [Read a text file as a disk.frame](https://diskframe.com/articles/ingesting-data.html)
+
 - [Read a text file as a Filebacked Big Matrix](https://privefl.github.io/bigstatsr/reference/big_read.html)
 
 - [Read a text file as a Filebacked Data Frame](https://privefl.github.io/bigdfr/reference/FDF_read.html)
