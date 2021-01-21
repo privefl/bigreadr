@@ -2,7 +2,7 @@
 
 .onLoad <- function(libname, pkgname) {
   options(
-    bigreadr.nThread = parallel::detectCores() - 1L
+    bigreadr.nThread = parallelly::availableCores() - 1L
   )
 }
 
