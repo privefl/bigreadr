@@ -30,13 +30,13 @@ test_that("'fread2' works with multiple files", {
 test_that("'fread2' can use different types of input", {
 
   cmd <- sprintf("grep -v setosa %s", fwrite2(datasets::iris))
-  expect_identical(fread2(cmd), data.table::fread(cmd, data.table = FALSE))
+  expect_equal(fread2(cmd), data.table::fread(cmd, data.table = FALSE))
 
   url <- "https://raw.githubusercontent.com/privefl/bigsnpr/master/inst/extdata/example.fam"
-  expect_identical(fread2(url), data.table::fread(url, data.table = FALSE))
+  expect_equal(fread2(url), data.table::fread(url, data.table = FALSE))
 
   text <- paste(readLines(url), collapse = "\n")
-  expect_identical(fread2(text), data.table::fread(url, data.table = FALSE))
+  expect_equal(fread2(text), data.table::fread(url, data.table = FALSE))
 })
 
 ################################################################################
@@ -44,17 +44,17 @@ test_that("'fread2' can use different types of input", {
 test_that("'big_fread1' works", {
 
   iris1 <- big_fread1(file = csv, 50, print_timings = FALSE)
-  expect_identical(iris1, iris)
+  expect_equal(iris1, iris)
 
   expect_warning(
     iris1 <- big_fread1(file = csv, 50, print_timings = FALSE,
                         .combine = function() stop("ERROR")),
     "Combining failed.")
   expect_length(iris1, 4)
-  expect_identical(rbind_df(iris1), iris)
+  expect_equal(rbind_df(iris1), iris)
 
   iris2 <- big_fread1(file = csv, 250, print_timings = FALSE)
-  expect_identical(iris2, iris)
+  expect_equal(iris2, iris)
 
   ind3 <- 1:4
   iris3 <- big_fread1(file = csv, 7, select = ind3, skip = 1, print_timings = FALSE)
@@ -75,18 +75,18 @@ test_that("'big_fread2' works", {
   for (nb_parts in 1:7) {
 
     iris1 <- big_fread2(file = csv, nb_parts)
-    expect_identical(iris1, iris)
+    expect_equal(iris1, iris)
 
     expect_warning(
       iris1 <- big_fread2(file = csv, nb_parts,
                           .combine = function() stop("ERROR")),
       "Combining failed.")
     expect_length(iris1, min(nb_parts, ncol(iris)))
-    expect_identical(cbind_df(iris1), iris)
+    expect_equal(cbind_df(iris1), iris)
 
     ind2 <- 1
     iris2 <- big_fread2(file = csv, nb_parts, select = ind2, skip = 0)
-    expect_identical(iris2, iris[ind2])
+    expect_equal(iris2, iris[ind2])
 
     ind3 <- 1:4
     iris3 <- big_fread2(file = csv, nb_parts, select = ind3, skip = 1)
