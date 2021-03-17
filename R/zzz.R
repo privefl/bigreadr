@@ -2,7 +2,7 @@
 
 .onLoad <- function(libname, pkgname) {
   options(
-    bigreadr.nThread = parallelly::availableCores() - 1L
+    bigreadr.nThread = max(parallelly::availableCores() - 1L, 1L)
   )
 }
 
