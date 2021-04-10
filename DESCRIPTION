@@ -1,6 +1,6 @@
 Package: bigreadr
-Version: 0.2.3
-Date: 2021-03-17
+Version: 0.2.4
+Date: 2021-04-10
 Title: Read Large Text Files
 Description: Read large text files by splitting them in smaller files.
     Package 'bigreadr' also provides some convenient wrappers around fread()
@@ -12,7 +12,6 @@ Authors@R:
            email = "florian.prive.21@gmail.com")
 License: GPL-3
 Encoding: UTF-8
-LazyData: true
 ByteCompile: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.0
