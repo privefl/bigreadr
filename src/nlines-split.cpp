@@ -72,10 +72,12 @@ List split_every_nlines(std::string name_in,
                         bool repeat_header) {
 
   FILE *fp_in = fopen(name_in.c_str(), "r"), *fp_out;
-  if (fp_in == NULL) Rcpp::stop("Error while opening file '%s'.", name_in);
+  if (fp_in == NULL)
+    Rcpp::stop("Error while opening file '%s'.", name_in);
 
   const char *fn_out = prefix_out.c_str();
-  char *name_out = new char[strlen(fn_out) + 20];
+  size_t max_len = strlen(fn_out) + 20;
+  char *name_out = new char[max_len];
 
   size_t size = INIT_SIZE;
 
@@ -94,7 +96,7 @@ List split_every_nlines(std::string name_in,
   while (not_eof) {
 
     // Open file number 'nfile'
-    sprintf(name_out, "%s_%d.txt", fn_out, ++nfile);
+    snprintf(name_out, max_len, "%s_%d.txt", fn_out, ++nfile);
     fp_out = fopen(name_out, "w");
 
     // Fill it with 'every_nlines' lines

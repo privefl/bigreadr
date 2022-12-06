@@ -12,7 +12,7 @@ Read large text files based on splitting + `data.table::fread`
 
 ## Example
 
-```{r}
+```r
 # remotes::install_github("privefl/bigreadr")
 library(bigreadr)
 
