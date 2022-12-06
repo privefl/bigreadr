@@ -9,8 +9,8 @@ test_that("'split_every_nlines()' works", {
   tmp <- bigreadr::fwrite2(iris)
   test <- bigreadr:::split_every_nlines(tmp, tmp, 20, TRUE)
   files <- list.files(tempdir(), basename(tmp), full.names = TRUE)
-  expect_identical(normalizePath(sort(files)),
-                   c(tmp, paste0(tmp, "_", 1:8, ".txt")))
+  files2 <- c(tmp, paste0(tmp, "_", 1:8, ".txt"))
+  expect_identical(normalizePath(sort(files)), normalizePath(files2))
 })
 
 ################################################################################
